@@ -47,7 +47,7 @@ const BookItem = (props) => {
                 </Card.Header>
                 <Card.Body>
                     <blockquote className="blockquote mb-0">
-                        <img src={props.myBook.Poster} alt={props.myBook.Year}/>
+                        <img src={props.myBook.Poster} alt={props.myBook.Title}/>
                         <footer>{props.myBook.Year}</footer>
                     </blockquote>
                 </Card.Body>
