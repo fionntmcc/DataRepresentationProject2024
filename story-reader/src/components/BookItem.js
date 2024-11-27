@@ -2,7 +2,7 @@
 import { useEffect } from "react";
 import Card from "react-bootstrap/Card";
 
-const MovieItem = (props) => {
+const BookItem = (props) => {
 
     // useEffect() functions handle side effects caused by anything
     // that may be outside of scope of the function such as

@@ -11,8 +11,8 @@ function App() {
       <NavigationBar />
       <Routes>
         <Route path="/home" element={ <Home/> } />
-        <Route path="/read" element={ <Browse/> } />
-        <Route path="/browse" element={ <Read/> } />
+        <Route path="/browse" element={ <Browse/> } />
+        <Route path="/read" element={ <Read/> } />
       </Routes>
     </Router>
   );

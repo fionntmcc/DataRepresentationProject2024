@@ -1,5 +1,5 @@
 // necessary inputs
-import BookItem from "./MovieItem";
+import BookItem from "./BookItem";
 
 // Books holds list of Book objects
 const Books = (props) => {
