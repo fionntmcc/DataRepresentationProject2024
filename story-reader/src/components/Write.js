@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 
 // Reusable read component
-const Create = () => {
+const Write = () => {
 
   // useState() is a hook in React that allows you to add 
   // state variables to functional components.
@@ -83,4 +83,4 @@ const handleSubmit = (e) => {
   )
   };
   
-  export default Create;
+  export default Write;
