@@ -1,7 +1,8 @@
 import { useState } from "react";
+import axios from "axios";
 
 // Reusable read component
-const Write = () => {
+const Create = () => {
 
   // useState() is a hook in React that allows you to add 
   // state variables to functional components.
@@ -19,13 +20,23 @@ const Write = () => {
   const [year, setYear] = useState("");
   const [poster, setPoster] = useState("");
 
-  // Log input values to console
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(title);
-    console.log(year);
-    console.log(poster);
-  }
+  // handle botton click, log book details and post book to server
+const handleSubmit = (e) => {
+  e.preventDefault();
+  
+  console.log(`Title: ${title}, Year: ${year}, Poster: ${poster}`);
+  
+  const book = {
+    title: title,
+    year: year,
+    poster: poster
+  };
+  
+  // Post created book to server, retrieve response from server
+  axios.post('http://localhost:4000/api/books', book)
+    .then((res) => console.log(res.data))
+    .catch((err) => console.log(err.data));
+};
 
   return(
     <div>
@@ -73,4 +84,4 @@ const Write = () => {
   )
   };
   
-  export default Write;
+  export default Create;
