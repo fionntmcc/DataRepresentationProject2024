@@ -5,7 +5,7 @@ import axios from "axios";
 import { useActionData } from "react-router-dom";
 
 // Reusable read component
-const Read = () => {
+const Browse = () => {
 
     // constant to store books as JSON
     const [books, setBooks] = useState([]); // initialise books to null array
