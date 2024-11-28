@@ -40,7 +40,6 @@ const handleSubmit = (e) => {
 
   return(
     <div>
-      <h1>Hello from the Create component</h1>
       <form onSubmit={handleSubmit}>
         
         {/* Input box to change book value */}
