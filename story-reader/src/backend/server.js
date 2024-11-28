@@ -2,9 +2,9 @@
     Express.js allows for easy creation of a server that 
     handles routes and uses URL params
 */
+require('dotenv').config();
 const express = require('express');
 const app = express();
-const port = 4000;
 
 /* 
     cors is a middleware that defines what a ips are allowed to communicate
@@ -31,7 +31,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 const mongoose = require('mongoose');
-mongoose.connect('mongodb+srv://admin:admin@bookcluster.3xcyk.mongodb.net/bookdb');
+mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const bookSchema = new mongoose.Schema({
   title:String,
@@ -66,8 +66,8 @@ app.post('/api/books',async (req, res)=>{
     res.status(201).json({"message":"Book Added!",Book:newBook});
 })
 
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+app.listen(process.env.SERVER_PORT, () => {
+    console.log(`Server is running on http://localhost:${process.env.SERVER_PORT}`);
 });
 
 // Fetches the specific book's info.
