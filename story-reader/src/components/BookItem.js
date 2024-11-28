@@ -1,4 +1,6 @@
 // necessary inputs
+// Provides linking to other app routes.
+import { Link } from 'react-router-dom';
 import { useEffect } from "react";
 import Card from "react-bootstrap/Card";
 
@@ -41,7 +43,8 @@ const BookItem = (props) => {
     return(
         <div>   
             {/*card for stylized list*/}
-            <Card>
+            <Link to={"/read/" + props.myBook._id} >
+                <Card>
                 <Card.Header>
                     {props.myBook.Title}
                 </Card.Header>
@@ -51,7 +54,10 @@ const BookItem = (props) => {
                         <footer>{props.myBook.year}</footer>
                     </blockquote>
                 </Card.Body>
-            </Card>
+                </Card>
+
+            </Link>
+            
         </div>
     );
 }
