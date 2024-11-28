@@ -1,16 +1,19 @@
 
 /*
+
+/*
     Express.js allows for easy creation of a server that 
     handles routes and uses URL params
 */
-
 const express = require('express');
+
 const app = express();
 
 const port = 4000; // port for website
 
 const cors = require('cors');
 app.use(cors());
+const Book = require('./models/Book');
 
 /* 
     cors is a middleware that defines what a ips are allowed to communicate
@@ -32,12 +35,69 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+
+
+const mongoose = require('mongoose');
+const MONGO_URI = 'mongodb+srv://admin:admin@merndb.3xcyk.mongodb.net/?retryWrites=true&w=majority&appName=MernDB';
+
+mongoose.connect(MONGO_URI)
+.then(() => {
+    console.log('Connected to Mongodb');
+}).catch((err) => {
+    console.error("Error connecting to MongoDB: ", err);
+});
+
+// Insert books into the database
+const books = [
+    { title: "The Catcher in the Rye", author: "J.D. Salinger", year: 1951 },
+    { title: "To Kill a Mockingbird", author: "Harper Lee", year: 1960 },
+    { title: "1984", author: "George Orwell", year: 1949 },
+    { title: "The Great Gatsby", author: "F. Scott Fitzgerald", year: 1925 },
+    { title: "Pride and Prejudice", author: "Jane Austen", year: 1813 }
+  ];
+
+  
+
+  // Insert multiple documents (books) into the collection
+Book.insertMany(books)
+.then(() => {
+  console.log('Books inserted successfully');
+  mongoose.connection.close(); // Close the connection after insertion
+})
+.catch((err) => {
+  console.error('Error inserting books:', err);
+  mongoose.connection.close(); // Close the connection on error
+});
+
+app.get('/', (req, res) => {
+    res.send('API is running....'); 
+});
+
+app.get('/api/books', async (req, res) => {
+    const books = await bookModel.find();
+    res.status(200).json({books});
+});
+
+app.get('/api/book/:id', async (req ,res)=>{
+  const book = await bookModel.findById(req.params.id);
+  res.json(book);
+})
+
+app.post('/api/books',async (req, res)=>{
+    console.log(req.body.title);
+    const {Title, Tear, Poster} = req.body;
+
+    const newBook = new bookModel({title, year, poster});
+    await newBook.save();
+
+    res.status(201).json({"message":"Book Added!",Book:newBook});
+});
+
 /*
     The bodyParser allows for access to the body of a post.
     This is necessary because unlike the get method, data
     is returned in the body, and not the URL.
 */
-//const bodyParser = require('body-parser');
 
 const path = require('path');
 const { stringify } = require('querystring');
@@ -52,6 +112,7 @@ app.use((err, req, res, next) => {
     res.status(500).send('Something went wrong!');
 });
 
+/*
 // return books as JSON
 app.get("/api/books", (req, res) => {
     // app returns back JSON on books
@@ -103,6 +164,7 @@ app.get("/api/books", (req, res) => {
     res.status(200).json({ myBooks: books });
 
 });
+*/
 
 // log port to console
 app.listen(port, () => {
