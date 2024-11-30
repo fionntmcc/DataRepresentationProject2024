@@ -9,23 +9,28 @@ const Browse = () => {
   // store books as JSON
   const [books, setBooks] = useState([]); // initialise books to null array
 
-  useEffect(() => {
-    
+  const Reload = () => {
+    console.log("Reloading books");
     axios.get('http://localhost:4000/api/books')
       .then((response) => {
-        console.log(response.data);
+        console.log(response.data.books);
         setBooks(response.data.books);
       })
       .catch((error) => {
-        console.log(error);
+        console.log("Error loading movies: ", error);
       });
+  };
+
+  useEffect(() => {
+    
+    Reload();
   } , []);
 
   return (
     // return book list
     <div>
-        {/* display books */}
-      <Books myBooks={books} />
+        {/* display books - refresh on reload */}
+      <Books myBooks={books} ReloadData={Reload} />
     </div>
   );
 }
