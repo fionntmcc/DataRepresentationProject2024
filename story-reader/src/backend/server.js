@@ -67,9 +67,7 @@ app.post('/api/books',async (req, res)=>{
     res.status(201).json({"message":"Book Added!",Book:newBook});
 })
 
-app.listen(process.env.SERVER_PORT, () => {
-    console.log(`Server is running on http://localhost:${process.env.SERVER_PORT}`);
-});
+
 
 // Fetches the specific book's info.
 // Takes updated details from req.body 
@@ -89,4 +87,20 @@ app.get('/api/book/:id', async (req, res) => {
 app.put('/api/book/:id', async (req, res) => {
   let book = await bookModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
   res.send(book);
+});
+
+// Deletes the specific book from the database
+// deletes by id
+/**
+ * @param {string} req.params.id - The ID of the book to delete
+ */
+app.delete('/api/book/:id', async (req, res) => {
+  
+  console.log('Deleting book with ID:', req.params.id);
+  const book = await bookModel.findByIdAndDelete(req.params.id);
+  res.status(200).send({ message: "Book deleted successfully", book });
+});
+
+app.listen(process.env.SERVER_PORT, () => {
+  console.log(`Server is running on http://localhost:${process.env.SERVER_PORT}`);
 });
