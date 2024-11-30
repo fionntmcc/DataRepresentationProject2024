@@ -7,7 +7,7 @@ const Books = (props) => {
     return props.myBooks.map(
         (book) => {
             // give key to identify individual BookItem 
-            return <BookItem myBook={book} key={book.id}/>
+            return <BookItem myBook={book} key={book._id}/>
         }
     );
 }

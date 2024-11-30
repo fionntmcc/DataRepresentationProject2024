@@ -19,7 +19,7 @@ const Browse = () => {
       .catch((error) => {
         console.log(error);
       });
-  });
+  } , []);
 
   return (
     // return book list

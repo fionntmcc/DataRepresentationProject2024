@@ -46,7 +46,7 @@ const BookItem = (props) => {
             <Link to={"/read/" + props.myBook._id} >
                 <Card>
                 <Card.Header>
-                    {props.myBook.Title}
+                    {props.myBook.title}
                 </Card.Header>
                 <Card.Body>
                     <blockquote className="blockquote mb-0">

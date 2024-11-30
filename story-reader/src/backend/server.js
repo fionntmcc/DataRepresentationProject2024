@@ -57,6 +57,7 @@ app.post('/api/books',async (req, res)=>{
         This is necessary because unlike the get method, data
         is returned in the body, and not the URL.
     */
+   console.log("Looking for books");
     console.log(req.body.title);
     const {title, year, poster} = req.body;
 
