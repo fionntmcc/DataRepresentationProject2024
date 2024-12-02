@@ -14,7 +14,7 @@ function App() {
       <Routes>
         <Route path="/home" element={ <Home/> } />
         <Route path="/browse" element={ <Browse/> } />
-        <Route path="/read" element={ <Read/> } />
+        <Route path="/read/:id" element={ <Read/> } />
         <Route path="/write" element={ <Write/> } />
       </Routes>
     </Router>
