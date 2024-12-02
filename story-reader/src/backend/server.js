@@ -25,13 +25,13 @@ app.use(function(req, res, next) {
     BodyParser allows for us to parse the returned data easily,
     in json in this case
 */
-
 const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 const mongoose = require('mongoose');
-mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true });
+// mongoose.connect(process.env.REACT_APP_MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect("mongodb+srv://admin:admin@bookcluster.3xcyk.mongodb.net/bookdb", { useNewUrlParser: true, useUnifiedTopology: true });
 
 const bookSchema = new mongoose.Schema({
   title:String,
@@ -101,6 +101,6 @@ app.delete('/api/book/:id', async (req, res) => {
   res.status(200).send({ message: "Book deleted successfully", book });
 });
 
-app.listen(process.env.SERVER_PORT, () => {
-  console.log(`Server is running on http://localhost:${process.env.SERVER_PORT}`);
+app.listen(4000, () => {
+  console.log(`Server is running on http://localhost:${4000}`);
 });
