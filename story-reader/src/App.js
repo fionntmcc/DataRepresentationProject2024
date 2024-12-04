@@ -6,23 +6,30 @@ import Browse from './components/Browse';
 import Read from './components/Read';
 import Write from './components/Write';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import DarkMode from './components/DarkMode/DarkMode';
+import Update from './components/Update';
+import Settings from './components/ThemeOption';
+import { ThemeProvider } from './context/ThemeContext';
 
 function App() {
   return (
-    <div className='App'>
-      <Router>
-        <NavigationBar />
-        <Routes>
-          <Route path="/home" element={<Home />} />
-          <Route path="/browse" element={<Browse />} />
-          <Route path="/read/:id" element={<Read />} />
-          <Route path="/write" element={<Write />} />
-        </Routes>
-      </Router>
-
-
+    <div id="app" data-theme="dark">
+      <ThemeProvider>
+      <div className="container">
+        <Router>
+          <NavigationBar />
+          <Routes>
+            <Route path="/home" element={<Home />} />
+            <Route path="/browse" element={<Browse />} />
+            <Route path="/read/:id" element={<Read />} />
+            <Route path="/write" element={<Write />} />
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/update/:id" element={<Update />} />
+          </Routes>
+        </Router>
+      </div>
+    </ThemeProvider>
     </div>
+    
   );
 }
 

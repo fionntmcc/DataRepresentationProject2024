@@ -1,19 +1,27 @@
-/* default imports */
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import React, { useContext, useEffect } from 'react';
+import { createRoot } from 'react-dom/client';
 import './index.css';
 import App from './App';
+import { ThemeProvider, ThemeContext } from './context/ThemeContext';
 import reportWebVitals from './reportWebVitals';
 
-/* Additional imports */
-// import bootstrap for styling
-import 'bootstrap/dist/css/bootstrap.min.css';
+const Root = () => {
+  const { theme, fontSize } = useContext(ThemeContext);
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+  useEffect(() => {
+    document.body.className = `${theme} ${fontSize}`;
+  }, [theme, fontSize]);
+
+  return <App />;
+};
+
+const container = document.getElementById('root');
+const root = createRoot(container);
+
 root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
+  <ThemeProvider>
+    <Root />
+  </ThemeProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

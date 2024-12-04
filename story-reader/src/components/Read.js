@@ -1,10 +1,12 @@
-import React, { useMemo, useState, useEffect } from 'react';
+import React, { useMemo, useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Badge, Button, ButtonGroup } from 'react-bootstrap';
 import TabBar from './TabBar.js';
+import { ThemeContext } from '../context/ThemeContext'
 
 export default function Read() {
+  const { theme } = useContext(ThemeContext);
   let { id } = useParams();
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
@@ -28,7 +30,7 @@ export default function Read() {
       .catch((error) => {
         console.log(error);
       });
-  }, [id]);
+  }, [id, theme]);
 
   useEffect(() => {
     setPageText(getPage(page));
@@ -59,7 +61,7 @@ export default function Read() {
   }
 
   return (
-    <div>
+    <div className={`read-component ${theme}`}>
       <h1>{title} <Badge bg="secondary">New</Badge></h1>
       <h4>by {author}</h4>
       <p className="center-text">{pageText}</p>
