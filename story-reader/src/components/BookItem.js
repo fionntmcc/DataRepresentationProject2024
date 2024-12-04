@@ -35,46 +35,52 @@ const BookItem = (props) => {
     // This is useful for resetting state and cleaning up subscription calls.
 
     // handler calls axios.delete to delete the book
-  const handleDelete = (e) => {
-    e.preventDefault();
-    //console.log("props" + props.myBook._id);
-    axios.delete('http://localhost:4000/api/book/' + props.myBook._id)
-        .then(() => {
-            // reload books
-            props.Reload();
-        })
-        .catch((error) => {
-            console.error("Error deleting book:", error);
-        });
+    const handleDelete = (e) => {
+        e.preventDefault();
+        //console.log("props" + props.myBook._id);
+        axios.delete('http://localhost:4000/api/book/' + props.myBook._id)
+            .then(() => {
+                // reload books
+                props.Reload();
+            })
+            .catch((error) => {
+                console.error("Error deleting book:", error);
+            });
     }
 
-    
+
     useEffect(() => {
         // debug - log books to console whenever props mount
         // or update
         console.log("Books:", props.myBooks);
-      }, [props.myBooks]);
-    
+    }, [props.myBooks]);
+
     // return book information for BookItem
-    return(
-        <div>   
+    return (
+        <div>
             {/*card for stylized list*/}
             <Link to={"/read/" + props.myBook._id} >
                 <Card>
-                <Card.Header>
-                    {props.myBook.title}
-                </Card.Header>
-                <Card.Body>
-                    <blockquote className="blockquote mb-0">
-                        <img src={props.myBook.poster} alt={props.myBook.title}/>
-                        <footer>{props.myBook.year}</footer>
-                    </blockquote>
-                </Card.Body>
+                    <Card.Header>
+                        {props.myBook.title}
+                    </Card.Header>
+                    <Card.Body>
+                        <blockquote className="blockquote mb-0">
+                            <img src={props.myBook.poster} alt={props.myBook.title} />
+                            <footer>{props.myBook.year}</footer>
+                        </blockquote>
+                    </Card.Body>
                 </Card>
             </Link>
             {/* Button to delete the book */}
-            <Button variant="danger" onClick= {handleDelete}>Delete</Button>
-            
+            <Button variant="danger" onClick={handleDelete}
+            >Delete</Button>
+            <Link to={"/read/" + props.myBook._id} >
+                <Button>Read</Button>
+            </Link>
+            <Link to={"/update/" + props.myBook._id} >
+                <Button variant='secondary'>Update Book</Button>
+            </Link>
         </div>
     );
 }
