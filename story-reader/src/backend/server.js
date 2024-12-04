@@ -31,12 +31,13 @@ app.use(bodyParser.json());
 
 const mongoose = require('mongoose');
 // mongoose.connect(process.env.REACT_APP_MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true });
-mongoose.connect("mongodb+srv://admin:admin@bookcluster.3xcyk.mongodb.net/bookdb", { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(process.env.REACT_APP_MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const bookSchema = new mongoose.Schema({
   title:String,
   year:String,
-  poster:String
+  poster:String,
+  text:String,
 });
 
 const bookModel = new mongoose.model('mybooks',bookSchema);
@@ -59,9 +60,9 @@ app.post('/api/books',async (req, res)=>{
     */
    console.log("Looking for books");
     console.log(req.body.title);
-    const {title, year, poster} = req.body;
+    const {title, year, poster, text} = req.body;
 
-    const newBook = new bookModel({title, year, poster});
+    const newBook = new bookModel({title, year, poster, text});
     await newBook.save();
 
     res.status(201).json({"message":"Book Added!",Book:newBook});
@@ -76,6 +77,8 @@ app.post('/api/books',async (req, res)=>{
 
 app.get('/api/book/:id', async (req, res) => {
   let book = await bookModel.findById({ _id: req.params.id });
+  console.log('sending book with id: ', req.params.id);
+  console.log('book: ', book);
   res.send(book);
 });
 
@@ -101,6 +104,6 @@ app.delete('/api/book/:id', async (req, res) => {
   res.status(200).send({ message: "Book deleted successfully", book });
 });
 
-app.listen(4000, () => {
-  console.log(`Server is running on http://localhost:${4000}`);
+app.listen(process.env.REACT_APP_SERVER_PORT, () => {
+  console.log(`Server is running on http://localhost:${process.env.REACT_APP_SERVER_PORT}`);
 });

@@ -19,68 +19,80 @@ const Write = () => {
   const [title, setTitle,] = useState("");
   const [year, setYear] = useState("");
   const [poster, setPoster] = useState("");
+  const [text, setText] = useState("");
 
   // handle botton click, log book details and post book to server
-const handleSubmit = (e) => {
-  e.preventDefault();
-  
-  console.log(`Title: ${title}, Year: ${year}, Poster: ${poster}`);
-  
-  const book = {
-    title: title,
-    year: year,
-    poster: poster
-  };
-  
-  // Post created book to server, retrieve response from server
-  axios.post('http://localhost:4000/api/books', book)
-    .then((res) => console.log(res.data))
-    .catch((err) => console.log(err.data));
-};
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-  return(
+    console.log(`Title: ${title}, Year: ${year}, Poster: ${poster}`, `Text: ${text}`);
+
+    const book = {
+      title: title,
+      year: year,
+      poster: poster,
+      text: text,
+    };
+
+    // Post created book to server, retrieve response from server
+    axios.post('http://localhost:4000/api/books', book)
+      .then((res) => console.log(res.data))
+      .catch((err) => console.log(err.data));
+  };
+
+  return (
     <div>
       <form onSubmit={handleSubmit}>
-        
+
         {/* Input box to change book value */}
         <div className="form-group">
-    	    <label>Add Book Title: </label>
+          <label>Add Book Title: </label>
           <input type="text"
-          className="form-control"
-          value={title}
-          onChange={(e) => {setTitle(e.target.value) }}
+            className="form-control"
+            value={title}
+            onChange={(e) => { setTitle(e.target.value) }}
           />
         </div>
 
         {/* Input box to change year value */}
         <div>
-    	    <label>Add Book Year: </label>
+          <label>Add Book Year: </label>
           <input type="text"
-          className="form-control"
-          value={year}
-          onChange={(e) => {setYear(e.target.value) }}
+            className="form-control"
+            value={year}
+            onChange={(e) => { setYear(e.target.value) }}
           />
         </div>
 
         {/* Input box to change poster value */}
         <div>
-    	    <label>Add Poster URL: </label>
+          <label>Add Poster URL: </label>
           <input type="text"
-          className="form-control"
-          value={poster}
-          onChange={(e) => {setPoster(e.target.value) }}
+            className="form-control"
+            value={poster}
+            onChange={(e) => { setPoster(e.target.value) }}
           />
         </div>
 
-      {/* Submit button - runs handleSubmit() */}
-        <div>
-          <input type="submit" value="Add Book"/>
+        {/* Input box to change book value */}
+        <div className="form-group">
+          <label>Add Book Text: </label>
+          <input type="text"
+            className="form-control"
+            value={text}
+            onChange={(e) => { setText(e.target.value) }}
+          />
         </div>
-        
-        
+
+        {/* Submit button - runs handleSubmit() */}
+        <div>
+          <input type="submit" value="Add Book" />
+        </div>
+
+
       </form>
     </div>
   )
-  };
-  
-  export default Write;
+};
+
+export default Write;

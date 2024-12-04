@@ -2,9 +2,24 @@
   text-align: center;
 }
 
+#light {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+#dark {
+  background-color: #333;
+  color: #f0f0f0;
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
+}
+
+body {
+  --color-background: #fafafa;
+  --color-foreground: #1f2023;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -13,15 +28,22 @@
   }
 }
 
+@media (prefers-color-scheme: dark) {
+  body {
+  --color-background: #1f2023;
+  --color-foreground: #efefef;
+  }
+}
+
 .App-header {
-  background-color: #282c34;
+  background-color: var(--body_background);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 2vmin);
-  color: white;
+  color: var(--body_color);
 }
 
 .App-link {
