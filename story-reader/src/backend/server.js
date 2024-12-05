@@ -6,6 +6,9 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 
+// multer allows for image upload
+const multer = require("multer");
+
 /* 
     cors is a middleware that defines what a ips are allowed to communicate
     with the server. Protects against DOS attacks, etc.
@@ -13,6 +16,7 @@ const app = express();
 const cors = require('cors');
 app.use(cors());
 
+// cors enabled for given client requests
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
@@ -29,18 +33,17 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+// Connect to the database using mongoose
 const mongoose = require('mongoose');
+
 // mongoose.connect(process.env.REACT_APP_MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connect(process.env.REACT_APP_MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true });
 
-const bookSchema = new mongoose.Schema({
-  title:String,
-  year:String,
-  poster:String,
-  text:String,
-});
+// multer setup for file upload
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
-const bookModel = new mongoose.model('mybooks',bookSchema);
+const bookModel = require('./models/Book');
 
 app.get('/api/books', async (req, res) => {
     const books = await bookModel.find({});

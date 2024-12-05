@@ -10,7 +10,7 @@ const SearchBar = ({ setSearchQuery }) => {
   };
 
   return (
-    <Navbar className="bg-body-tertiary justify-content-between">
+    <Navbar className="ml-3 bg-body-tertiary justify-content-between">
       <Form>
         <Row>
           <Col xs="auto">
