@@ -1,13 +1,14 @@
-
 // necessary imports
 import Books from "./Books";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import SearchBar from "./SearchBar";
 
 const Browse = () => {
 
   // store books as JSON
   const [books, setBooks] = useState([]); // initialise books to null array
+  const [searchQuery, setSearchQuery] = useState(""); // state for search query
 
   // axios get request to get books from database
   function Reload() {
@@ -23,17 +24,23 @@ const Browse = () => {
       });
   };
 
-  // reload books on init
+  // reload books on init and whenever searchQuery changes
   useEffect(() => {
-    
     Reload();
-  } , []);
+  }, [searchQuery]);
+
+  // filter books based on search query
+  const filteredBooks = books.filter(book => 
+    book.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     // return book list
     <div>
-        {/* display books - refresh on reload */}
-      <Books myBooks={books} ReloadData={Reload} />
+      <SearchBar setSearchQuery={setSearchQuery} /> {/* pass setSearchQuery to SearchBar */}
+      <div>{searchQuery}</div>
+      {/* display filtered books */}
+      <Books myBooks={filteredBooks} ReloadData={Reload} />
     </div>
   );
 }

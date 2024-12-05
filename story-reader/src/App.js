@@ -9,6 +9,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Update from './components/Update';
 import Settings from './components/ThemeOption';
 import { ThemeProvider } from './context/ThemeContext';
+import SearchBar from './components/SearchBar';
 
 function App() {
   return (
