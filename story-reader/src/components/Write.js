@@ -26,18 +26,23 @@ const Write = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log(`Title: ${title}, Year: ${year}, Poster: ${poster}`, `Text: ${text}0`, `PosterImg: ${posterImg}`);
+    console.log(`Title: ${title}, Year: ${year}, Poster: ${poster}`, `Text: ${text}`, `PosterImg: ${posterImg}`);
 
-    const book = {
-      title: title,
-      year: year,
-      poster: poster,
-      text: text,
-      posterImg: posterImg,
-    };
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('year', year);
+    formData.append('poster', poster);
+    formData.append('text', text);
+    if (posterImg) {
+      formData.append('posterImg', posterImg);
+    }
 
     // Post created book to server, retrieve response from server
-    axios.post('http://localhost:4000/api/books', book)
+    axios.post('http://localhost:4000/api/books', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
       .then((res) => console.log(res.data))
       .catch((err) => console.log(err.data));
   };
@@ -91,13 +96,16 @@ const Write = () => {
           <input
             type="file"
             className="form-control"
-            onChange={(e) => setPosterImg(e.target.files[0])}
+            onChange={(e) => {
+              console.log(e.target.files[0]);
+              setPosterImg(e.target.files[0])
+            }}
           />
         </div>
 
         {/* Submit button - runs handleSubmit() */}
-        <div>
-          <input type="submit" value="Add Book" />
+        <div className="form-group">
+          <input type="submit" value="Update Book" className="btn btn-primary" />
         </div>
 
 

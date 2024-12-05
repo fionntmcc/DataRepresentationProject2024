@@ -1,3 +1,4 @@
+import React from 'react';
 // necessary inputs
 // Provides linking to other app routes.
 import { Link } from 'react-router-dom';
@@ -6,6 +7,7 @@ import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
+import { Buffer } from "buffer";
 //import { Buffer } from "buffer";
 
 const BookItem = (props) => {
@@ -34,10 +36,9 @@ const BookItem = (props) => {
     // if so, convert to base64
     // else, use default image URL
     const posterUrl = props.myBook.posterImg
-        ? `data:${props.myBook.uplImg.contentType};base64,${Buffer.from(
-            props.myBook.uplImg.data
-        ).toString("base64")}`
-        : props.myBook.image;
+        ? `data:${props.myBook.posterImg.contentType};base64,${Buffer.from(
+            props.myBook.posterImg.data).toString("base64")}`
+        : props.myBook.poster;
 
 
     // return book information for BookItem
@@ -68,11 +69,6 @@ const BookItem = (props) => {
                                     />
                                 </div>
                             )}
-                            <img style={{
-                                maxWidth: "50%",
-                                height: "auto",
-                                marginBottom: "10px",
-                            }} src={props.myBook.poster} alt={props.myBook.title} />
                         </div>
                     </blockquote>
                 </Card.Body>

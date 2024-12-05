@@ -17,7 +17,7 @@ const cors = require('cors');
 app.use(cors());
 
 // cors enabled for given client requests
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -47,40 +47,41 @@ const upload = multer({ storage: storage });
 const bookModel = require('./models/Book');
 
 app.get('/api/books', async (req, res) => {
-    const books = await bookModel.find({});
-    res.status(200).json({books})
+  const books = await bookModel.find({});
+  res.status(200).json({ books })
 });
 
-app.get('/api/book/:id', async (req ,res)=>{
+app.get('/api/book/:id', async (req, res) => {
   const book = await bookModel.findById(req.params.id);
   res.json(book);
 })
 
-app.post('/api/books', upload.single('posterImg'), async (req, res)=>{
-    /*
-        The bodyParser middleware allows for access to the body of a post.
-        This is necessary because unlike the get method, data
-        is returned in the body, and not the URL.
-    */
-   console.log("Looking for books");
-    console.log(req.body.title);
-    const {title, year, poster, text} = req.body;
-    const posterImg = req.file
+app.post('/api/books', upload.single('posterImg'), async (req, res) => {
+  /*
+      The bodyParser middleware allows for access to the body of a post.
+      This is necessary because unlike the get method, data
+      is returned in the body, and not the URL.
+  */
+  console.log("Looking for books");
+  console.log(req.body.title);
+  const { title, year, poster, text } = req.body;
+  const posterImg = req.file
     ? {
-        data: req.file.buffer,
-        contentType: req.file.mimetype,
-      }
+      data: req.file.buffer,
+      contentType: req.file.mimetype,
+    }
     : null;
 
-    const newBook = new bookModel({title,
-       year, 
-       poster, 
-       text,
-       posterImg,
-       });
-    await newBook.save();
+  const newBook = new bookModel({
+    title,
+    year,
+    poster,
+    text,
+    posterImg,
+  });
+  await newBook.save();
 
-    res.status(201).json({"message":"Book Added!",Book:newBook});
+  res.status(201).json({ "message": "Book Added!", Book: newBook });
 })
 
 
@@ -102,9 +103,23 @@ app.get('/api/book/:id', async (req, res) => {
 // Route takes the updated details from req.body.
 // Updates the book in the DB.
 // Returns updated book to confirm the change
-app.put('/api/book/:id', async (req, res) => {
-  let book = await bookModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
-  res.send(book);
+app.put('/api/book/:id', upload.single('posterImg'), (req, res) => {
+  const id = req.params.id;
+  const updatedBook = {
+    title: req.body.title,
+    year: req.body.year,
+    poster: req.body.poster,
+    text: req.body.text,
+    posterImg: req.file ? req.file.filename : req.body.posterImg
+  };
+
+  Book.findByIdAndUpdate(id, updatedBook, { new: true }, (err, book) => {
+    if (err) {
+      res.status(500).send(err);
+    } else {
+      res.json(book);
+    }
+  });
 });
 
 // Deletes the specific book from the database
@@ -113,7 +128,7 @@ app.put('/api/book/:id', async (req, res) => {
  * @param {string} req.params.id - The ID of the book to delete
  */
 app.delete('/api/book/:id', async (req, res) => {
-  
+
   console.log('Deleting book with ID:', req.params.id);
   const book = await bookModel.findByIdAndDelete(req.params.id);
   res.status(200).send({ message: "Book deleted successfully", book });

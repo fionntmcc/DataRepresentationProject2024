@@ -13,81 +13,113 @@ import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 
 export default function Update() {
-  let { id } = useParams();
-  const [title, setTitle] = useState("");
-  const [year, setYear] = useState("");
-  const [poster, setPoster] = useState("");
-  const [text, setText] = useState("");
-  const navigate = useNavigate();
+    let { id } = useParams();
+    const [title, setTitle] = useState("");
+    const [year, setYear] = useState("");
+    const [poster, setPoster] = useState("");
+    const [text, setText] = useState("");
+    const [posterImg, setPosterImg] = useState(null);
+    const navigate = useNavigate();
 
-// useEffect() is a lifecycle hook that allows us to
-// synchronise with an external system.
-// Allows us to access the params of the current route.
-// With it, we can get the book id.
-// We can retrieve data from the DB.
-// Easy to load and edit for a single book.
-useEffect(() => {
-    axios.get('http://localhost:4000/api/book/' + id)
-        .then((response) => {
-            setTitle(response.data.title);
-            setYear(response.data.year);
-            setPoster(response.data.poster);
-            setText(response.data.text);
+    // useEffect() is a lifecycle hook that allows us to
+    // synchronise with an external system.
+    // Allows us to access the params of the current route.
+    // With it, we can get the book id.
+    // We can retrieve data from the DB.
+    // Easy to load and edit for a single book.
+    useEffect(() => {
+        axios.get('http://localhost:4000/api/book/' + id)
+            .then((response) => {
+                setTitle(response.data.title);
+                setYear(response.data.year);
+                setPoster(response.data.poster);
+                setText(response.data.text);
+                setPosterImg(response.data.posterImg);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, [id]);
+
+    // post put new book with user details to DB.
+    // Then, log response from server,
+    // and navigate back to Read page
+    const handleSubmit = (event) => {
+
+        event.preventDefault();
+
+        console.log(`Title: ${title}, Year: ${year}, Poster: ${poster}`, `Text: ${text}`, `PosterImg: ${posterImg}`);
+
+        const formData = new FormData();
+        formData.append('title', title);
+        formData.append('year', year);
+        formData.append('poster', poster);
+        formData.append('text', text);
+        if (posterImg) {
+            formData.append('posterImg', posterImg);
+        }
+
+        // Post created book to server, retrieve response from server
+        axios.put('http://localhost:4000/api/book/' + id, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
         })
-        .catch((error) => {
-            console.log(error);
-        });
-}, [id]);
+            .then((res) => {
+                console.log(res.data);
+                navigate('/browse');
+            }
+            )
+            .catch((err) => console.log(err.data));
+    }
 
-// post put new book with user details to DB.
-// Then, log response from server,
-// and navigate back to Read page
-const handleSubmit = (event) => {
-    event.preventDefault();
-    const newBook = { id, title, year, poster, text };
-    axios.put('http://localhost:4000/api/book/' + id, newBook)
-        .then((res) => {
-            console.log(res.data);
-            navigate('/browse');
-        });
-}
-
-return (
-    <div>
-        {/* For new book details input */}
-        <form onSubmit={handleSubmit}>
-            <div className="form-group">
-                <label>Book Title: </label>
-                <input type="text" 
-                className="form-control" 
-                value={title} 
-                onChange={(e) => setTitle(e.target.value)} />
-            </div>
-            <div className="form-group">
-                <label>Release Year: </label>
-                <input type="text" 
-                className="form-control" 
-                value={year} 
-                onChange={(e) => setYear(e.target.value)} />
-            </div>
-            <div className="form-group">
-                <label>Poster URL: </label>
-                <input type="text" 
-                className="form-control" 
-                value={poster} 
-                onChange={(e) => setPoster(e.target.value)} />
-            </div>
-            <div className="form-group">
-                <label>Release Text: </label>
-                <input type="text" 
-                className="form-control" 
-                value={text} 
-                onChange={(e) => setText(e.target.value)} />
-            </div>
-            <div className="form-group">
-                <input type="submit" value="Update Book" className="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-);
+    return (
+        <div>
+            {/* For new book details input */}
+            <form onSubmit={handleSubmit}>
+                <div className="form-group">
+                    <label>Book Title: </label>
+                    <input type="text"
+                        className="form-control"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)} />
+                </div>
+                <div className="form-group">
+                    <label>Release Year: </label>
+                    <input type="text"
+                        className="form-control"
+                        value={year}
+                        onChange={(e) => setYear(e.target.value)} />
+                </div>
+                <div className="form-group">
+                    <label>Poster URL: </label>
+                    <input type="text"
+                        className="form-control"
+                        value={poster}
+                        onChange={(e) => setPoster(e.target.value)} />
+                </div>
+                <div className="form-group">
+                    <label>Release Text: </label>
+                    <input type="text"
+                        className="form-control"
+                        value={text}
+                        onChange={(e) => setText(e.target.value)} />
+                </div>
+                <div className="form-group mb-3">
+                    <label className="form-label">Upload Image:</label>
+                    <input
+                        type="file"
+                        className="form-control"
+                        onChange={(e) => {
+                            console.log(e.target.files[0]);
+                            setPosterImg(e.target.files[0])
+                        }}
+                    />
+                </div>
+                <div className="form-group">
+                    <input type="submit" value="Update Book" className="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    );
 }
