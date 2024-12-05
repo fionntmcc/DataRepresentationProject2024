@@ -10,31 +10,11 @@ import Col from "react-bootstrap/Col";
 
 const BookItem = (props) => {
 
-    // useEffect() functions handle side effects caused by anything
-    // that may be outside of scope of the function such as
-    // fetching data, subscriptions etc.
-
-    // useEffect() runs after the renderer by default.
-    // If no dependency is provided, it will execute after
-    // every render cycle.
-
-    // If you provide a dependency array as the second argument,
-    // useEffect() will only run when the given argument's
-    // values update.
-
-    // useEffect() can also return a cleanup function, such as:
-
-    /*
-        useEffect(() => {
-        const subscription = someAPICall();
-  
-        return () => {
-            subscription.unsubscribe(); // Cleanup when component unmounts
-        };
-        }, []);
-    */
-
-    // This is useful for resetting state and cleaning up subscription calls.
+    useEffect(() => {
+        // debug - log books to console whenever props mount
+        // or update
+        console.log("Books:", props.myBooks);
+    }, [props.myBooks]);
 
     // handler calls axios.delete to delete the book
     const handleDelete = (e) => {
@@ -50,12 +30,15 @@ const BookItem = (props) => {
             });
     }
 
+    // Checks if image was uploaded,
+    // if so, convert to base64
+    // else, use default image URL
+    const posterUrl = props.myBook.posterImg
+        ? `data:${props.myBook.uplImg.contentType};base64,${Buffer.from(
+            props.myBook.uplImg.data
+        ).toString("base64")}`
+        : props.myBook.image;
 
-    useEffect(() => {
-        // debug - log books to console whenever props mount
-        // or update
-        console.log("Books:", props.myBooks);
-    }, [props.myBooks]);
 
     // return book information for BookItem
     return (
@@ -71,6 +54,20 @@ const BookItem = (props) => {
                 <Card.Body>
                     <blockquote className="blockquote mb-0">
                         <div className="d-flex justify-content-center">
+                            {posterUrl && (
+                                <div className="d-flex justify-content-center">
+                                    <img
+                                        src={posterUrl}
+                                        alt={props.myBook.title}
+                                        className="img-fluid"
+                                        style={{
+                                            maxWidth: "50%",
+                                            height: "auto",
+                                            marginBottom: "10px",
+                                        }}
+                                    />
+                                </div>
+                            )}
                             <img style={{
                                 maxWidth: "50%",
                                 height: "auto",

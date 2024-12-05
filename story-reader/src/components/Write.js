@@ -20,18 +20,20 @@ const Write = () => {
   const [year, setYear] = useState("");
   const [poster, setPoster] = useState("");
   const [text, setText] = useState("");
+  const [posterImg, setPosterImg] = useState(null);
 
   // handle botton click, log book details and post book to server
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log(`Title: ${title}, Year: ${year}, Poster: ${poster}`, `Text: ${text}`);
+    console.log(`Title: ${title}, Year: ${year}, Poster: ${poster}`, `Text: ${text}0`, `PosterImg: ${posterImg}`);
 
     const book = {
       title: title,
       year: year,
       poster: poster,
       text: text,
+      posterImg: posterImg,
     };
 
     // Post created book to server, retrieve response from server
@@ -81,6 +83,15 @@ const Write = () => {
             className="form-control"
             value={text}
             onChange={(e) => { setText(e.target.value) }}
+          />
+        </div>
+
+        <div className="form-group mb-3">
+          <label className="form-label">Upload Image:</label>
+          <input
+            type="file"
+            className="form-control"
+            onChange={(e) => setPosterImg(e.target.files[0])}
           />
         </div>
 

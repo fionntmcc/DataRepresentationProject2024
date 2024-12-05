@@ -5,11 +5,11 @@ const bookSchema = new mongoose.Schema({
   title:String,
   year:String,
   poster:String,
+  text:String,
   posterImg: { // image upload
     data: Buffer,
     contentType: String,
   },
-  text:String,
 });
 
 const Book = mongoose.model('books', bookSchema);

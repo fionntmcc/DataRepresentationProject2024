@@ -43,6 +43,7 @@ mongoose.connect(process.env.REACT_APP_MONGO_URL, { useNewUrlParser: true, useUn
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
+// get book model
 const bookModel = require('./models/Book');
 
 app.get('/api/books', async (req, res) => {
@@ -55,7 +56,7 @@ app.get('/api/book/:id', async (req ,res)=>{
   res.json(book);
 })
 
-app.post('/api/books',async (req, res)=>{
+app.post('/api/books', upload.single('posterImg'), async (req, res)=>{
     /*
         The bodyParser middleware allows for access to the body of a post.
         This is necessary because unlike the get method, data
@@ -64,8 +65,19 @@ app.post('/api/books',async (req, res)=>{
    console.log("Looking for books");
     console.log(req.body.title);
     const {title, year, poster, text} = req.body;
+    const posterImg = req.file
+    ? {
+        data: req.file.buffer,
+        contentType: req.file.mimetype,
+      }
+    : null;
 
-    const newBook = new bookModel({title, year, poster, text});
+    const newBook = new bookModel({title,
+       year, 
+       poster, 
+       text,
+       posterImg,
+       });
     await newBook.save();
 
     res.status(201).json({"message":"Book Added!",Book:newBook});
