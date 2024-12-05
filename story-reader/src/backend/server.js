@@ -45,6 +45,7 @@ const upload = multer({ storage: storage });
 
 // get book model
 const bookModel = require('./models/Book');
+const Book = require('./models/Book');
 
 app.get('/api/books', async (req, res) => {
   const books = await bookModel.find({});
@@ -103,24 +104,68 @@ app.get('/api/book/:id', async (req, res) => {
 // Route takes the updated details from req.body.
 // Updates the book in the DB.
 // Returns updated book to confirm the change
-app.put('/api/book/:id', upload.single('posterImg'), (req, res) => {
+// Update a book by ID in MongoDB
+app.put("/api/book/:id", upload.single("posterImg"), async (req, res) => {
+  try {
+    const { title, year, poster, text } = req.body;
+    const posterImg = req.file
+      ? {
+          data: req.file.buffer,
+          contentType: req.file.mimetype,
+        }
+      : null;
+
+    // update the book on database
+    const updatedBook = await Book.findByIdAndUpdate(
+      req.params.id,
+      {
+        title, 
+        year, 
+        poster, 
+        text,
+        posterImg,
+      },
+      { new: true }
+    );
+
+    if (!updatedBook) {
+      return res.status(404).json({ message: "Book not found" });
+    }
+
+    res.json({ message: "Book updated successfully", book: updatedBook });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
+  }
+});
+
+/* app.put('/api/book/:id', upload.single('posterImg'), async (req, res) => {
   const id = req.params.id;
+  const { title, year, poster, text } = req.body;
+  const posterImg = req.file
+    ? {
+      data: req.file.buffer,
+      contentType: req.file.mimetype,
+    }
+    : null;
+
   const updatedBook = {
-    title: req.body.title,
-    year: req.body.year,
-    poster: req.body.poster,
-    text: req.body.text,
-    posterImg: req.file ? req.file.filename : req.body.posterImg
+    title,
+    year,
+    poster,
+    text,
+    posterImg,
   };
 
-  Book.findByIdAndUpdate(id, updatedBook, { new: true }, (err, book) => {
+  console.log('Updated book:', updatedBook);
+
+  await Book.findByIdAndUpdate(id, updatedBook, { new: true }, (err, book) => {
     if (err) {
       res.status(500).send(err);
     } else {
       res.json(book);
     }
   });
-});
+}); */
 
 // Deletes the specific book from the database
 // deletes by id
