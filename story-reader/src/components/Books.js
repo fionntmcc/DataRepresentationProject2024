@@ -1,24 +1,26 @@
 // necessary inputs
+import React from "react";
 import BookItem from "./BookItem";
+import Row from "react-bootstrap/Row";
+
 
 // Books holds list of Book objects
 const Books = (props) => {
-    // build list of BookItems for displaying as html code
-    return (
-        <> 
-            {/* 
-                Map the books array to BookItem.
-                Reload book data whem the Reload button is clicked. 
-            */}
-            {props.myBooks.map((book) => (
-                <BookItem
-                    myBook={book}
-                    key={book._id}
-                    Reload={props.ReloadData}
-                />
-            ))}
-        </>
-    );
+
+    // Maps the tasks to TaskItem components
+  return (
+    <div className="container mt-5">
+      <Row className="g-6">
+        {props.myBooks.map((book) => (
+          <BookItem 
+            myBook={book} 
+            key={book._id}
+            Reload={props.ReloadData}   
+          />
+        ))}
+      </Row>
+    </div>
+  );
 }
 
 export default Books;

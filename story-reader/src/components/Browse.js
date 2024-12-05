@@ -10,7 +10,7 @@ const Browse = () => {
   const [books, setBooks] = useState([]); // initialise books to null array
 
   // axios get request to get books from database
-  const Reload = () => {
+  function Reload() {
     console.log("Reloading books");
     axios.get('http://localhost:4000/api/books')
       .then((response) => {

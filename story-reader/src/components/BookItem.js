@@ -2,9 +2,11 @@
 // Provides linking to other app routes.
 import { Link } from 'react-router-dom';
 import { useEffect } from "react";
-import Card from "react-bootstrap/Card";
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
+import Card from "react-bootstrap/Card";
+import Col from "react-bootstrap/Col";
+//import { Buffer } from "buffer";
 
 const BookItem = (props) => {
 
@@ -57,31 +59,40 @@ const BookItem = (props) => {
 
     // return book information for BookItem
     return (
-        <div>
-            {/*card for stylized list*/}
-            <Link to={"/read/" + props.myBook._id} >
-                <Card>
-                    <Card.Header>
-                        {props.myBook.title}
-                    </Card.Header>
-                    <Card.Body>
-                        <blockquote className="blockquote mb-0">
-                            <img src={props.myBook.poster} alt={props.myBook.title} />
-                            <footer>{props.myBook.year}</footer>
-                        </blockquote>
-                    </Card.Body>
-                </Card>
-            </Link>
-            {/* Button to delete the book */}
-            <Button variant="danger" onClick={handleDelete}
-            >Delete</Button>
-            <Link to={"/read/" + props.myBook._id} >
-                <Button>Read</Button>
-            </Link>
-            <Link to={"/update/" + props.myBook._id} >
-                <Button variant='secondary'>Update Book</Button>
-            </Link>
-        </div>
+        <Col xs={12} sm={6} md={6} className="mb-4 px-4">
+            <Card className={`h-100 p-3`}>
+                <Card.Header style={
+                    {
+                        backgroundColor: "#f8f9fa",
+                        textAlign: "center",
+                        fontSize: "1.5em",
+                    }
+                }>{props.myBook.title}</Card.Header>
+                <Card.Body>
+                    <blockquote className="blockquote mb-0">
+                        <div className="d-flex justify-content-center">
+                            <img style={{
+                                maxWidth: "50%",
+                                height: "auto",
+                                marginBottom: "10px",
+                            }} src={props.myBook.poster} alt={props.myBook.title} />
+                        </div>
+                    </blockquote>
+                </Card.Body>
+                <Card.Footer>
+                    <div className="d-flex justify-content-between">
+                        <Link to={"/read/" + props.myBook._id}>
+                            <Button variant="primary">Read</Button>
+                        </Link>
+                        <Link to={"/update/" + props.myBook._id}>
+                            <Button variant="warning">Update</Button>
+                        </Link>
+                        <Button variant="danger" onClick={handleDelete}>Delete</Button>
+                    </div>
+                </Card.Footer>
+            </Card>
+        </Col>
+
     );
 }
 
