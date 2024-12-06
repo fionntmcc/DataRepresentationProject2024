@@ -10,12 +10,13 @@ import Update from './components/Update';
 import Settings from './components/ThemeOption';
 import { ThemeProvider } from './context/ThemeContext';
 import SearchBar from './components/SearchBar';
+import Footer from "./components/Footer";
 
 function App() {
   return (
     <div id="app" data-theme="dark">
       <ThemeProvider>
-      <div className="container">
+      <div className="container flex-grow-1">
         <Router>
           <NavigationBar />
           <Routes>
@@ -28,6 +29,7 @@ function App() {
           </Routes>
         </Router>
       </div>
+      <Footer></Footer>
     </ThemeProvider>
     </div>
     

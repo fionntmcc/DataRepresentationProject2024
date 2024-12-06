@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import Card from "react-bootstrap/Card";
@@ -16,7 +16,7 @@ const Home = () => {
     if (
       localStorage.getItem("activeBook") !== null || undefined) {
       console.log("Reloading book");
-    axios.get(`http://localhost:4000/api/book${localStorage.getItem("activeBook")}`)
+    axios.get(`http://localhost:4000/api/book/${localStorage.getItem("activeBook")}`)
       .then((response) => {
         // log response
         console.log(response.data);
@@ -29,18 +29,19 @@ const Home = () => {
   };
 
   useEffect(() => {
-    // debug - log books to console whenever props mount
-    // or update
-    console.log("Books:", props.myBooks);
-}, [props.myBooks]);
+    // debug - log books to console whenever book mounts
+    // or updates
+    Reload();
+    console.log("Book:", book);
+}, []);
 
 // Checks if image was uploaded,
 // if so, convert to base64
 // else, use default image URL
-const posterUrl = props.myBook.posterImg
-    ? `data:${props.myBook.posterImg.contentType};base64,${Buffer.from(
-        props.myBook.posterImg.data).toString("base64")}`
-    : props.myBook.poster;
+const posterUrl = book.posterImg
+    ? `data:${book.posterImg.contentType};base64,${Buffer.from(
+        book.posterImg.data).toString("base64")}`
+    : book.poster;
 
     return (
       <Card className={`h-100 p-3`}>
@@ -50,7 +51,7 @@ const posterUrl = props.myBook.posterImg
                         textAlign: "center",
                         fontSize: "1.5em",
                     }
-                }>{props.myBook.title}</Card.Header>
+                }>{book.title}</Card.Header>
                 <Card.Body>
                     <blockquote className="blockquote mb-0">
                         <div className="d-flex justify-content-center">
@@ -58,7 +59,7 @@ const posterUrl = props.myBook.posterImg
                                 <div className="d-flex justify-content-center">
                                     <img
                                         src={posterUrl}
-                                        alt={props.myBook.title}
+                                        alt={book.title}
                                         className="img-fluid"
                                         style={{
                                             maxWidth: "50%",
@@ -73,7 +74,7 @@ const posterUrl = props.myBook.posterImg
                 </Card.Body>
                 <Card.Footer>
                     <div className="d-flex justify-content-between">
-                        <Link to={"/read/" + props.myBook._id}>
+                        <Link to={"/read/" + book._id}>
                             <Button variant="primary">Read</Button>
                         </Link>
                     </div>

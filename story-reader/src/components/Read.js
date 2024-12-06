@@ -3,7 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Badge, Button, ButtonGroup } from 'react-bootstrap';
 import TabBar from './TabBar.js';
-import { ThemeContext } from '../context/ThemeContext'
+import { ThemeContext } from '../context/ThemeContext';
+import { ToggleButton } from 'react-bootstrap';
 import { set } from 'mongoose';
 
 export default function Read() {
@@ -13,7 +14,14 @@ export default function Read() {
   const [author, setAuthor] = useState("");
   const [text, setText] = useState("");
   const [pageText, setPageText] = useState("");
-  const [page, setPage] = useState(1);
+  
+  const [page, setPage] = useState(() => {
+    if (localStorage.getItem("activeBook") === id) {
+      return parseInt(localStorage.getItem("activePage"));
+    } else {
+      return 1;
+    }
+  });
   const navigate = useNavigate();
 
   const PAGE_SIZE = 150;
@@ -73,13 +81,22 @@ export default function Read() {
 
   function setActiveBook() {
     console.log("setActive book");
-    localStorage.setItem("activeBook", id);
+    if (localStorage.getItem("activeBook") !== id) {
+      localStorage.setItem("activeBook", id);
+      return true;
+    } else { 
+      localStorage.removeItem("activeBook"); }
   }
 
   return (
     <div className={`read-component ${theme}`}>
       <h1>{title} <Badge bg="secondary">New</Badge></h1>
-      <Button variant="secondary" onClick={setActiveBook}>Set Active</Button>
+      
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" onChange={setActiveBook} />
+        <label class="form-check-label" for="flexSwitchCheckDefault">Set as Active Book</label>
+      </div>
+
       <h4>by {author}</h4>
       <p className="center-text">{pageText}</p>
 
