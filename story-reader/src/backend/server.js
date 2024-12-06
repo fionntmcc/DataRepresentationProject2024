@@ -138,34 +138,6 @@ app.put("/api/book/:id", upload.single("posterImg"), async (req, res) => {
   }
 });
 
-/* app.put('/api/book/:id', upload.single('posterImg'), async (req, res) => {
-  const id = req.params.id;
-  const { title, year, poster, text } = req.body;
-  const posterImg = req.file
-    ? {
-      data: req.file.buffer,
-      contentType: req.file.mimetype,
-    }
-    : null;
-
-  const updatedBook = {
-    title,
-    year,
-    poster,
-    text,
-    posterImg,
-  };
-
-  console.log('Updated book:', updatedBook);
-
-  await Book.findByIdAndUpdate(id, updatedBook, { new: true }, (err, book) => {
-    if (err) {
-      res.status(500).send(err);
-    } else {
-      res.json(book);
-    }
-  });
-}); */
 
 // Deletes the specific book from the database
 // deletes by id

@@ -20,12 +20,13 @@ const Browse = () => {
         setBooks(response.data.books);
       })
       .catch((error) => {
-        console.log("Error loading movies: ", error);
+        console.log("Error loading books: ", error);
       });
   };
 
   // reload books on init and whenever searchQuery changes
   useEffect(() => {
+    console.log("active book", localStorage.getItem("activeBook"));
     Reload();
   }, [searchQuery]);
 

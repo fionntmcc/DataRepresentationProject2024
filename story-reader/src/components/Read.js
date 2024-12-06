@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Badge, Button, ButtonGroup } from 'react-bootstrap';
 import TabBar from './TabBar.js';
 import { ThemeContext } from '../context/ThemeContext'
+import { set } from 'mongoose';
 
 export default function Read() {
   const { theme } = useContext(ThemeContext);
@@ -51,24 +52,40 @@ export default function Read() {
     if (page > 1) {
       setPage(page - 1);
     }
+
+    if (localStorage.getItem("activeBook") == id) {
+      console.log("setting active page");
+      localStorage.setItem("activePage", page);
+    }
   }
 
   function nextPage() {
     console.log("nextPage");
     if (page < Math.ceil(text.length / PAGE_SIZE)) {
       setPage(page + 1);
+
+      if (localStorage.getItem("activeBook") === id) {
+        console.log("setting active page");
+        localStorage.setItem("activePage", page);
+      }
     }
+  }
+
+  function setActiveBook() {
+    console.log("setActive book");
+    localStorage.setItem("activeBook", id);
   }
 
   return (
     <div className={`read-component ${theme}`}>
       <h1>{title} <Badge bg="secondary">New</Badge></h1>
+      <Button variant="secondary" onClick={setActiveBook}>Set Active</Button>
       <h4>by {author}</h4>
       <p className="center-text">{pageText}</p>
 
       <ButtonGroup aria-label="Basic example">
         <Button variant="secondary" onClick={prevPage}>Previous</Button>
-        <Button variant="secondary">huh</Button>
+        <Button variant="secondary"></Button>
         <Button variant="secondary" onClick={nextPage}>Next</Button>
       </ButtonGroup>
 
