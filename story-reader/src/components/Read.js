@@ -12,6 +12,7 @@ export default function Read() {
   let { id } = useParams();
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
+  const [year, setYear] = useState("");
   const [text, setText] = useState("");
   const [pageText, setPageText] = useState("");
   const [activeBook, setActiveBook] = useState(false);
@@ -35,6 +36,7 @@ export default function Read() {
         console.log(response.data.text);
         setTitle(response.data.title);
         setAuthor(response.data.author);
+        setYear(response.data.year);
         setText(response.data.text.split(" "));
         console.log(text);
       })
@@ -96,24 +98,21 @@ export default function Read() {
 
   return (
     <div className={`read-component ${theme}`}>
-      <h1 className="center-text">{title} <Badge bg="secondary">New</Badge></h1>
+      <h1 className="center-text">{title} <Badge bg="secondary">{year}</Badge></h1>
 
-      {/*  */}
-      <div class="form-check form-switch" height="90%">
-        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" onClick={toggleActiveBook} checked={isActive} />
-        <label class="form-check-label" for="flexSwitchCheckDefault">Set as Active Book</label>
+      <div className="form-check form-switch" style={{ marginBottom: '20px' }}>
+        <input className="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" onClick={toggleActiveBook} checked={isActive} />
+        <label className="form-check-label" htmlFor="flexSwitchCheckDefault">Set as Active Book</label>
       </div>
 
-      <h4 >by {author}</h4>
-      <p>{pageText}</p>
+      <h4>by {author}</h4>
+      <p style={{ textAlign: 'justify', marginBottom: '20px' }}>{pageText}</p>
 
-      <span >
-        <ButtonGroup aria-label="Basic example">
-          <Button variant="primary" onClick={prevPage}>Prev</Button>
-          <Button variant="secondary">Page: {page}</Button>
-          <Button variant="primary" onClick={nextPage}>Next</Button>
-        </ButtonGroup>
-      </span >
+      <ButtonGroup aria-label="Page navigation" style={{ marginBottom: '20px' }}>
+        <Button variant="primary" onClick={prevPage}>Prev</Button>
+        <Button variant="secondary">Page: {page}</Button>
+        <Button variant="primary" onClick={nextPage}>Next</Button>
+      </ButtonGroup>
     </div>
   );
 }

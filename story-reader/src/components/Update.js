@@ -11,10 +11,12 @@ import axios from 'axios';
 // the update is saved and useNavigate is called
 // to redirect to the Read page.
 import { useNavigate } from "react-router-dom";
+import { setMaxListeners } from '../backend/models/Book';
 
 export default function Update() {
     let { id } = useParams();
     const [title, setTitle] = useState("");
+    const [author, setAuthor] = useState("");
     const [year, setYear] = useState("");
     const [poster, setPoster] = useState("");
     const [text, setText] = useState("");
@@ -31,6 +33,7 @@ export default function Update() {
         axios.get('http://localhost:4000/api/book/' + id)
             .then((response) => {
                 setTitle(response.data.title);
+                setAuthor(response.data.author);
                 setYear(response.data.year);
                 setPoster(response.data.poster);
                 setText(response.data.text);
@@ -48,10 +51,12 @@ export default function Update() {
 
         event.preventDefault();
 
-        console.log(`Title: ${title}, Year: ${year}, Poster: ${poster}`, `Text: ${text}`, `PosterImg: ${posterImg}`);
+        // debug log book details
+        //console.log(`Title: ${title}, Year: ${year}, Poster: ${poster}`, `Text: ${text}`, `PosterImg: ${posterImg}`);
 
         const formData = new FormData();
         formData.append('title', title);
+        formData.append('author', author);
         formData.append('year', year);
         formData.append('poster', poster);
         formData.append('text', text);
@@ -83,6 +88,13 @@ export default function Update() {
                         className="form-control"
                         value={title}
                         onChange={(e) => setTitle(e.target.value)} />
+                </div>
+                <div className="form-group">
+                    <label>Release Author: </label>
+                    <input type="text"
+                        className="form-control"
+                        value={author}
+                        onChange={(e) => setAuthor(e.target.value)} />
                 </div>
                 <div className="form-group">
                     <label>Release Year: </label>

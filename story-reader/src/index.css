@@ -39,6 +39,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+  padding: 0 20px;
 }
 
 code {
@@ -48,4 +50,6 @@ code {
 
 .center-text {
   text-align: center;
-  }
+  font-size: 1.2em;
+  margin-bottom: 20px;
+}

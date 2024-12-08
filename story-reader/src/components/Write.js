@@ -17,6 +17,7 @@ const Write = () => {
 
   // Declare useState() for each value
   const [title, setTitle,] = useState("");
+  const [author, setAuthor] = useState("");
   const [year, setYear] = useState("");
   const [poster, setPoster] = useState("");
   const [text, setText] = useState("");
@@ -26,13 +27,17 @@ const Write = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log(`Title: ${title}, Year: ${year}, Poster: ${poster}`, `Text: ${text}`, `PosterImg: ${posterImg}`);
+    // debug log book details
+    //console.log(`Title: ${title}, Author: ${author}, Year: ${year}, Poster: ${poster}`, `Text: ${text}`, `PosterImg: ${posterImg}`);
 
+    // data to be sent to server
     const formData = new FormData();
     formData.append('title', title);
+    formData.append('author', author);
     formData.append('year', year);
     formData.append('poster', poster);
     formData.append('text', text);
+    // if user uploaded an image, append it to the form data
     if (posterImg) {
       formData.append('posterImg', posterImg);
     }
@@ -58,6 +63,16 @@ const Write = () => {
             className="form-control"
             value={title}
             onChange={(e) => { setTitle(e.target.value) }}
+          />
+        </div>
+
+        {/* Input box to change author value */}
+        <div>
+          <label>Add Author: </label>
+          <input type="text"
+            className="form-control"
+            value={year}
+            onChange={(e) => { setAuthor(e.target.value) }}
           />
         </div>
 
