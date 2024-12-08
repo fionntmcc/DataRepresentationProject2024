@@ -14,7 +14,8 @@ export default function Read() {
   const [author, setAuthor] = useState("");
   const [text, setText] = useState("");
   const [pageText, setPageText] = useState("");
-  
+  const [activeBook, setActiveBook] = useState(false);
+
   const [page, setPage] = useState(() => {
     if (localStorage.getItem("activeBook") === id) {
       return parseInt(localStorage.getItem("activePage"));
@@ -43,7 +44,12 @@ export default function Read() {
 
   useEffect(() => {
     setPageText(getPage(page));
+    if (localStorage.getItem("activeBook") === id) {
+      console.log("setting active page: ", page);
+      localStorage.setItem("activePage", page);
+    }
   }, [page, text]);
+  
 
   function getPage(page) {
     var pageText = "";
@@ -56,56 +62,57 @@ export default function Read() {
   }
 
   function prevPage() {
-    console.log("prevPage");
     if (page > 1) {
       setPage(page - 1);
-    }
-
-    if (localStorage.getItem("activeBook") == id) {
-      console.log("setting active page");
-      localStorage.setItem("activePage", page);
     }
   }
 
   function nextPage() {
-    console.log("nextPage");
     if (page < Math.ceil(text.length / PAGE_SIZE)) {
       setPage(page + 1);
-
-      if (localStorage.getItem("activeBook") === id) {
-        console.log("setting active page");
-        localStorage.setItem("activePage", page);
-      }
     }
   }
 
-  function setActiveBook() {
+  function toggleActiveBook() {
+    
+    if (activeBook) {
+      setActiveBook(false);
+      console.log("setActive book false");
+    } else {
+      setActiveBook(true);
+      console.log("setActive book true");
+    }
+
     console.log("setActive book");
     if (localStorage.getItem("activeBook") !== id) {
       localStorage.setItem("activeBook", id);
-      return true;
-    } else { 
-      localStorage.removeItem("activeBook"); }
+      localStorage.setItem("activePage", page);
+    } else {
+      localStorage.removeItem("activeBook");
+    }
   }
 
   return (
     <div className={`read-component ${theme}`}>
       <h1>{title} <Badge bg="secondary">New</Badge></h1>
-      
+
+      {/*  */}
       <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" onChange={setActiveBook} />
+        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" onClick={toggleActiveBook} checked={activeBook} />
         <label class="form-check-label" for="flexSwitchCheckDefault">Set as Active Book</label>
       </div>
 
       <h4>by {author}</h4>
       <p className="center-text">{pageText}</p>
 
-      <ButtonGroup aria-label="Basic example">
-        <Button variant="secondary" onClick={prevPage}>Previous</Button>
-        <Button variant="secondary"></Button>
-        <Button variant="secondary" onClick={nextPage}>Next</Button>
-      </ButtonGroup>
-
+      <span>
+        <ButtonGroup aria-label="Basic example">
+          <Button variant="secondary" onClick={prevPage}>Previous</Button>
+          <Button variant="secondary"></Button>
+          <Button variant="secondary" onClick={nextPage}>Next</Button>
+        </ButtonGroup>
+        <div>Page: {page}</div>
+      </span>
       <TabBar />
     </div>
   );

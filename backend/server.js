@@ -44,8 +44,8 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 // get book model
-const bookModel = require('../../../backend/models/Book');
-const Book = require('../../../backend/models/Book');
+const bookModel = require('./models/Book');
+const Book = require('./models/Book');
 
 app.get('/api/books', async (req, res) => {
   const books = await bookModel.find({});
