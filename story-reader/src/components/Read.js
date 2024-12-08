@@ -15,6 +15,7 @@ export default function Read() {
   const [text, setText] = useState("");
   const [pageText, setPageText] = useState("");
   const [activeBook, setActiveBook] = useState(false);
+  const [isActive, setIsActive] = useState(id === localStorage.getItem("activeBook"));
 
   const [page, setPage] = useState(() => {
     if (localStorage.getItem("activeBook") === id) {
@@ -33,7 +34,7 @@ export default function Read() {
         console.log(response.data);
         console.log(response.data.text);
         setTitle(response.data.title);
-        setAuthor(response.data.year);
+        setAuthor(response.data.author);
         setText(response.data.text.split(" "));
         console.log(text);
       })
@@ -49,7 +50,6 @@ export default function Read() {
       localStorage.setItem("activePage", page);
     }
   }, [page, text]);
-  
 
   function getPage(page) {
     var pageText = "";
@@ -74,13 +74,15 @@ export default function Read() {
   }
 
   function toggleActiveBook() {
-    
+
     if (activeBook) {
       setActiveBook(false);
       console.log("setActive book false");
+      setIsActive(false);
     } else {
       setActiveBook(true);
       console.log("setActive book true");
+      setIsActive(true);
     }
 
     console.log("setActive book");
@@ -94,26 +96,24 @@ export default function Read() {
 
   return (
     <div className={`read-component ${theme}`}>
-      <h1>{title} <Badge bg="secondary">New</Badge></h1>
+      <h1 className="center-text">{title} <Badge bg="secondary">New</Badge></h1>
 
       {/*  */}
-      <div class="form-check form-switch">
-        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" onClick={toggleActiveBook} checked={activeBook} />
+      <div class="form-check form-switch" height="90%">
+        <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault" onClick={toggleActiveBook} checked={isActive} />
         <label class="form-check-label" for="flexSwitchCheckDefault">Set as Active Book</label>
       </div>
 
-      <h4>by {author}</h4>
-      <p className="center-text">{pageText}</p>
+      <h4 >by {author}</h4>
+      <p>{pageText}</p>
 
-      <span>
+      <span >
         <ButtonGroup aria-label="Basic example">
-          <Button variant="secondary" onClick={prevPage}>Previous</Button>
-          <Button variant="secondary"></Button>
-          <Button variant="secondary" onClick={nextPage}>Next</Button>
+          <Button variant="primary" onClick={prevPage}>Prev</Button>
+          <Button variant="secondary">Page: {page}</Button>
+          <Button variant="primary" onClick={nextPage}>Next</Button>
         </ButtonGroup>
-        <div>Page: {page}</div>
-      </span>
-      <TabBar />
+      </span >
     </div>
   );
 }

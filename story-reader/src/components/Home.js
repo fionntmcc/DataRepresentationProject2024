@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import Card from "react-bootstrap/Card";
 import { Buffer } from "buffer";
+import Carousel from 'react-bootstrap/Carousel';
 
 const Home = () => {
 
@@ -13,18 +14,29 @@ const Home = () => {
 
   // axios get request to get active book from database
   function Reload() {
-    if (
-      localStorage.getItem("activeBook") !== null || undefined) {
-      console.log("Reloading book");
-    axios.get(`http://localhost:4000/api/book/${localStorage.getItem("activeBook")}`)
-      .then((response) => {
-        // log response
-        console.log(response.data);
-        setBook(response.data);
-      })
-      .catch((error) => {
-        console.log("Error loading book: ", error);
-      });
+    console.log("Reloading book");
+    const activeBook = localStorage.getItem("activeBook");
+    console.log(activeBook);
+    if (activeBook !== null) {
+      axios.get(`http://localhost:4000/api/book/${localStorage.getItem("activeBook")}`)
+        .then((response) => {
+          // log response
+          console.log(response.data);
+          setBook(response.data);
+        })
+        .catch((error) => {
+          console.log("Error loading book: ", error);
+        });
+    } else {
+      axios.get(`http://localhost:4000/api/random/book`)
+        .then((response) => {
+          // log response
+          console.log(response.data);
+          setBook(response.data);
+        })
+        .catch((error) => {
+          console.log("Error loading book: ", error);
+        });
     }
   };
 
@@ -32,55 +44,57 @@ const Home = () => {
     // debug - log books to console whenever book mounts
     // or updates
     Reload();
-    console.log("Book:", book);
-}, []);
+  }, []);
 
-// Checks if image was uploaded,
-// if so, convert to base64
-// else, use default image URL
-const posterUrl = book.posterImg
+  // Checks if image was uploaded,
+  // if so, convert to base64
+  // else, use default image URL
+  const posterUrl = book.posterImg
     ? `data:${book.posterImg.contentType};base64,${Buffer.from(
-        book.posterImg.data).toString("base64")}`
+      book.posterImg.data).toString("base64")}`
     : book.poster;
 
-    return (
-      <Card className={`h-100 p-3`}>
-                <Card.Header style={
-                    {
-                        backgroundColor: "#f8f9fa",
-                        textAlign: "center",
-                        fontSize: "1.5em",
-                    }
-                }>{book.title}</Card.Header>
-                <Card.Body>
-                    <blockquote className="blockquote mb-0">
-                        <div className="d-flex justify-content-center">
-                            {posterUrl && (
-                                <div className="d-flex justify-content-center">
-                                    <img
-                                        src={posterUrl}
-                                        alt={book.title}
-                                        className="img-fluid"
-                                        style={{
-                                            maxWidth: "50%",
-                                            height: "auto",
-                                            marginBottom: "10px",
-                                        }}
-                                    />
-                                </div>
-                            )}
-                        </div>
-                    </blockquote>
-                </Card.Body>
-                <Card.Footer>
-                    <div className="d-flex justify-content-between">
-                        <Link to={"/read/" + book._id}>
-                            <Button variant="primary">Read</Button>
-                        </Link>
-                    </div>
-                </Card.Footer>
-            </Card>
-    );
-  };
-  
-  export default Home;
+  if (book === null) {
+    return <div>Loading...</div>;
+  }
+  return (
+    <Carousel data-bs-theme="dark">
+      <Carousel.Item>
+        <img
+          className="d-block w-100 container-fluid"
+          src={posterUrl}
+          alt="First slide"
+        />
+        <Carousel.Caption>
+          <h5>Continue with your active book</h5>
+        </Carousel.Caption>
+      </Carousel.Item>
+      <Carousel.Item>
+        <img
+          className="d-block w-100"
+          src={posterUrl}
+          alt="Second slide"
+        />
+        <Carousel.Caption>
+          <h5>Second slide label</h5>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </Carousel.Caption>
+      </Carousel.Item>
+      <Carousel.Item>
+        <img
+          className="d-block w-100"
+          src={posterUrl}
+          alt="Third slide"
+        />
+        <Carousel.Caption>
+          <h5>Third slide label</h5>
+          <p>
+            Praesent commodo cursus magna, vel scelerisque nisl consectetur.
+          </p>
+        </Carousel.Caption>
+      </Carousel.Item>
+    </Carousel>
+  );
+};
+
+export default Home;

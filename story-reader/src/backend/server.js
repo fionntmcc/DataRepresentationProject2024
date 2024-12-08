@@ -44,18 +44,34 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 // get book model
-const bookModel = require('../../../backend/models/Book');
-const Book = require('../../../backend/models/Book');
+const bookModel = require('./models/Book');
+const Book = require('./models/Book');
 
 app.get('/api/books', async (req, res) => {
   const books = await bookModel.find({});
   res.status(200).json({ books })
 });
 
+// GET endpoint to return a book by ID
 app.get('/api/book/:id', async (req, res) => {
-  const book = await bookModel.findById(req.params.id);
-  res.json(book);
-})
+  const { id } = req.params;
+
+  // Validate the id parameter
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ message: 'Invalid book ID' });
+  }
+
+  try {
+    const book = await bookModel.findById(id);
+    if (!book) {
+      return res.status(404).json({ message: 'Book not found' });
+    }
+    res.json(book);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
 
 app.post('/api/books', upload.single('posterImg'), async (req, res) => {
   /*
@@ -65,7 +81,7 @@ app.post('/api/books', upload.single('posterImg'), async (req, res) => {
   */
   console.log("Looking for books");
   console.log(req.body.title);
-  const { title, year, poster, text } = req.body;
+  const { title, author, year, poster, text } = req.body;
   const posterImg = req.file
     ? {
       data: req.file.buffer,
@@ -75,6 +91,7 @@ app.post('/api/books', upload.single('posterImg'), async (req, res) => {
 
   const newBook = new bookModel({
     title,
+    author,
     year,
     poster,
     text,
@@ -92,11 +109,18 @@ app.post('/api/books', upload.single('posterImg'), async (req, res) => {
 // and updates the book in the DB.
 // returns updated book to confirm the change.
 
-app.get('/api/book/:id', async (req, res) => {
-  let book = await bookModel.findById({ _id: req.params.id });
-  console.log('sending book with id: ', req.params.id);
-  console.log('book: ', book);
-  res.send(book);
+// Duplicate route removed
+
+app.get('/api/random/book', async (req, res) => {
+  try {
+    const count = await bookModel.countDocuments();
+    const random = Math.floor(Math.random() * count);
+    const randomBook = await bookModel.findOne().skip(random);
+    res.status(200).json(randomBook);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
 });
 
 // Updates the  specific book's info.
@@ -107,21 +131,22 @@ app.get('/api/book/:id', async (req, res) => {
 // Update a book by ID in MongoDB
 app.put("/api/book/:id", upload.single("posterImg"), async (req, res) => {
   try {
-    const { title, year, poster, text } = req.body;
+    const { title, author, year, poster, text } = req.body;
     const posterImg = req.file
       ? {
-          data: req.file.buffer,
-          contentType: req.file.mimetype,
-        }
+        data: req.file.buffer,
+        contentType: req.file.mimetype,
+      }
       : null;
 
     // update the book on database
     const updatedBook = await Book.findByIdAndUpdate(
       req.params.id,
       {
-        title, 
-        year, 
-        poster, 
+        title,
+        author,
+        year,
+        poster,
         text,
         posterImg,
       },
