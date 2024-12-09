@@ -25,7 +25,6 @@ export default function Read() {
       return 1;
     }
   });
-  const navigate = useNavigate();
 
   const PAGE_SIZE = 150;
 

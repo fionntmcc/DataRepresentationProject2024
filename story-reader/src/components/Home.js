@@ -6,23 +6,27 @@ import axios from 'axios';
 import Card from "react-bootstrap/Card";
 import { Buffer } from "buffer";
 import Carousel from 'react-bootstrap/Carousel';
+import App from '../App';
+require('../App.css');
 
 const Home = () => {
 
   // store book as JSON
-  const [book, setBook] = useState([]); // initialise books to null
-
+  const [book1, setBook1] = useState([]); // initialise books to null
+  const [book2, setBook2] = useState([]);
+  const [book3, setBook3] = useState([]);
+  const activeBook = localStorage.getItem("activeBook");
   // axios get request to get active book from database
+
   function Reload() {
     console.log("Reloading book");
-    const activeBook = localStorage.getItem("activeBook");
-    console.log(activeBook);
+    console.log("active book ", activeBook);
     if (activeBook !== null) {
       axios.get(`http://localhost:4000/api/book/${localStorage.getItem("activeBook")}`)
         .then((response) => {
           // log response
           console.log(response.data);
-          setBook(response.data);
+          setBook1(response.data);
         })
         .catch((error) => {
           console.log("Error loading book: ", error);
@@ -32,12 +36,32 @@ const Home = () => {
         .then((response) => {
           // log response
           console.log(response.data);
-          setBook(response.data);
+          setBook1(response.data);
         })
         .catch((error) => {
           console.log("Error loading book: ", error);
         });
     }
+
+    axios.get(`http://localhost:4000/api/random/book`)
+      .then((response) => {
+        // log response
+        console.log(response.data);
+        setBook2(response.data);
+      })
+      .catch((error) => {
+        console.log("Error loading book: ", error);
+      });
+
+    axios.get(`http://localhost:4000/api/random/book`)
+      .then((response) => {
+        // log response
+        console.log(response.data);
+        setBook3(response.data);
+      })
+      .catch((error) => {
+        console.log("Error loading book: ", error);
+      });
   };
 
   useEffect(() => {
@@ -49,48 +73,97 @@ const Home = () => {
   // Checks if image was uploaded,
   // if so, convert to base64
   // else, use default image URL
-  const posterUrl = book.posterImg
-    ? `data:${book.posterImg.contentType};base64,${Buffer.from(
-      book.posterImg.data).toString("base64")}`
-    : book.poster;
+  const posterUrl1 = book1.posterImg
+    ? `data:${book1.posterImg.contentType};base64,${Buffer.from(
+      book1.posterImg.data).toString("base64")}`
+    : book1.poster;
 
-  if (book === null) {
+  const posterUrl2 = book2.posterImg
+    ? `data:${book2.posterImg.contentType};base64,${Buffer.from(
+      book2.posterImg.data).toString("base64")}`
+    : book2.poster;
+
+  const posterUrl3 = book3.posterImg
+    ? `data:${book3.posterImg.contentType};base64,${Buffer.from(
+      book3.posterImg.data).toString("base64")}`
+    : book3.poster;
+
+  /*
+  if (activeBook === null) {
     return <div>Loading...</div>;
   }
+  */
+
   return (
     <Carousel data-bs-theme="dark">
       <Carousel.Item>
         <img
-          className="d-block w-100 container-fluid"
-          src={posterUrl}
+          className="d-block w-100 container-fluid carousel-img"
+          src={posterUrl1}
           alt="First slide"
         />
-        <Carousel.Caption>
-          <h5>Continue with your active book</h5>
+
+        {book1.id != localStorage.getItem("activeBook") ?
+          <Carousel.Caption className=''>
+            <span className="badge bg-secondary">
+              <h5>Continue with your active book</h5>
+              <p>{book1.title} by {book1.author}</p>
+              <Link to={`/read/${book1._id}`}>
+                <Button variant="primary">Read</Button>
+              </Link>
+            </span>
+          </Carousel.Caption>
+          : <Carousel.Caption className=''>
+            <span className="badge bg-secondary">
+              <h5>Recommended </h5>
+              <p>{book1.title} by {book1.author}</p>
+              <Link to={`/read/${book1._id}`}>
+                <Button variant="primary">Read</Button>
+              </Link>
+            </span>
+          </Carousel.Caption>
+        }
+
+        <Carousel.Caption className=''>
+          <span className="badge bg-secondary">
+            <h5>Continue with your active book</h5>
+            <p>{book1.title} by {book1.author}</p>
+            <Link to={`/read/${book1._id}`}>
+              <Button variant="primary">Read</Button>
+            </Link>
+          </span>
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>
         <img
-          className="d-block w-100"
-          src={posterUrl}
-          alt="Second slide"
+          className="d-block w-100 container-fluid carousel-img"
+          src={posterUrl2}
+          alt="First slide"
         />
-        <Carousel.Caption>
-          <h5>Second slide label</h5>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        <Carousel.Caption className=''>
+          <span className="badge bg-secondary">
+            <h5>Recommended </h5>
+            <p>{book2.title} by {book2.author}</p>
+            <Link to={`/read/${book2._id}`}>
+              <Button variant="primary">Read</Button>
+            </Link>
+          </span>
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item>
         <img
-          className="d-block w-100"
-          src={posterUrl}
-          alt="Third slide"
+          className="d-block w-100 container-fluid carousel-img"
+          src={posterUrl3}
+          alt="First slide"
         />
-        <Carousel.Caption>
-          <h5>Third slide label</h5>
-          <p>
-            Praesent commodo cursus magna, vel scelerisque nisl consectetur.
-          </p>
+        <Carousel.Caption className=''>
+          <span className="badge bg-secondary">
+            <h5>Recommended</h5>
+            <p>{book3.title} by {book3.author}</p>
+            <Link to={`/read/${book3._id}`}>
+              <Button variant="primary">Read</Button>
+            </Link>
+          </span>
         </Carousel.Caption>
       </Carousel.Item>
     </Carousel>

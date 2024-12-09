@@ -99,7 +99,7 @@ app.get('/api/book/:id', async (req, res) => {
   res.send(book);
 });
 
-app.get('/api/book/random', async (req, res) => {
+app.get('/api/random/book', async (req, res) => {
   try {
     const count = await bookModel.countDocuments();
     const random = Math.floor(Math.random() * count);

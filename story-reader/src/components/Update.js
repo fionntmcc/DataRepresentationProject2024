@@ -11,7 +11,6 @@ import axios from 'axios';
 // the update is saved and useNavigate is called
 // to redirect to the Read page.
 import { useNavigate } from "react-router-dom";
-import { setMaxListeners } from '../backend/models/Book';
 
 export default function Update() {
     let { id } = useParams();
@@ -86,36 +85,31 @@ export default function Update() {
                     <label>Book Title: </label>
                     <input type="text"
                         className="form-control"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)} />
+                        value={title} />
                 </div>
                 <div className="form-group">
                     <label>Release Author: </label>
                     <input type="text"
                         className="form-control"
-                        value={author}
-                        onChange={(e) => setAuthor(e.target.value)} />
+                        value={author} />
                 </div>
                 <div className="form-group">
                     <label>Release Year: </label>
                     <input type="text"
                         className="form-control"
-                        value={year}
-                        onChange={(e) => setYear(e.target.value)} />
+                        value={year} />
                 </div>
                 <div className="form-group">
                     <label>Poster URL: </label>
                     <input type="text"
                         className="form-control"
-                        value={poster}
-                        onChange={(e) => setPoster(e.target.value)} />
+                        value={poster} />
                 </div>
                 <div className="form-group">
                     <label>Release Text: </label>
                     <input type="text"
                         className="form-control"
-                        value={text}
-                        onChange={(e) => setText(e.target.value)} />
+                        value={text} />
                 </div>
                 <div className="form-group mb-3">
                     <label className="form-label">Upload Image:</label>
