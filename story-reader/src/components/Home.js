@@ -96,7 +96,7 @@ const Home = () => {
 
   return (
     <Carousel data-bs-theme="dark">
-      <Carousel.Item>
+      <Carousel.Item className='carousel-container'>
         <img
           className="d-block w-100 container-fluid carousel-img"
           src={posterUrl1}
@@ -134,7 +134,7 @@ const Home = () => {
           </span>
         </Carousel.Caption>
       </Carousel.Item>
-      <Carousel.Item>
+      <Carousel.Item className='carousel-container'>
         <img
           className="d-block w-100 container-fluid carousel-img"
           src={posterUrl2}
@@ -150,7 +150,7 @@ const Home = () => {
           </span>
         </Carousel.Caption>
       </Carousel.Item>
-      <Carousel.Item>
+      <Carousel.Item className='carousel-container'>
         <img
           className="d-block w-100 container-fluid carousel-img"
           src={posterUrl3}

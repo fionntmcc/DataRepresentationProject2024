@@ -71,7 +71,7 @@ const Write = () => {
           <label>Add Author: </label>
           <input type="text"
             className="form-control"
-            value={year}
+            value={author}
             onChange={(e) => { setAuthor(e.target.value) }}
           />
         </div>
@@ -120,7 +120,7 @@ const Write = () => {
 
         {/* Submit button - runs handleSubmit() */}
         <div className="form-group">
-          <input type="submit" value="Update Book" className="btn btn-primary" />
+          <input type="submit" value="Submit" className="btn btn-primary" />
         </div>
 
 

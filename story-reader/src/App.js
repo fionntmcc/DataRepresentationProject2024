@@ -16,7 +16,6 @@ function App() {
   return (
     <div id="app" data-theme="dark">
       <ThemeProvider>
-      <div className="container flex-grow-1">
         <Router>
           <NavigationBar />
           <Routes>
@@ -28,7 +27,6 @@ function App() {
             <Route path="/update/:id" element={<Update />} />
           </Routes>
         </Router>
-      </div>
       <Footer></Footer>
     </ThemeProvider>
     </div>
