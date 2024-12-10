@@ -9,6 +9,7 @@ const Browse = () => {
   // store books as JSON
   const [books, setBooks] = useState([]); // initialise books to null array
   const [searchQuery, setSearchQuery] = useState(""); // state for search query
+  const [filterBy, setFilterBy] = useState("title"); // state for filter criteria
 
   // axios get request to get books from database
   function Reload() {
@@ -24,21 +25,39 @@ const Browse = () => {
       });
   };
 
-  // reload books on init and whenever searchQuery changes
+  // reload books on init and whenever searchQuery or filterBy changes
   useEffect(() => {
     console.log("active book", localStorage.getItem("activeBook"));
     Reload();
-  }, [searchQuery]);
+  }, [searchQuery, filterBy]);
 
-  // filter books based on search query
-  const filteredBooks = books.filter(book => 
-    book.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  var filteredBooks = books;
+  // filter books based on search query and filter criteria
+  if (filterBy === "title") {
+    filteredBooks = books.filter(book => 
+      book.title.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  } else if (filterBy === "author") {
+    filteredBooks = books.filter(book => 
+      book.author.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  } else if (filterBy === "year") {
+    filteredBooks = books.filter(book => 
+      book.year.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }
 
   return (
     // return book list
     <div>
       <SearchBar setSearchQuery={setSearchQuery} /> {/* pass setSearchQuery to SearchBar */}
+      <div>
+        <label htmlFor="filterBy">Filter by: </label>
+        <select id="filterBy" value={filterBy} onChange={(e) => setFilterBy(e.target.value)}>
+          <option value="title">Title</option>
+          <option value="author">Author</option>
+        </select>
+      </div>
       <div>{searchQuery}</div>
       {/* display filtered books */}
       <Books myBooks={filteredBooks} ReloadData={Reload} />

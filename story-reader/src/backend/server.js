@@ -65,7 +65,7 @@ app.post('/api/books', upload.single('posterImg'), async (req, res) => {
   */
   console.log("Looking for books");
   console.log(req.body.title);
-  const { title, year, poster, text } = req.body;
+  const { title, author, year, poster, text } = req.body;
   const posterImg = req.file
     ? {
       data: req.file.buffer,
@@ -75,6 +75,7 @@ app.post('/api/books', upload.single('posterImg'), async (req, res) => {
 
   const newBook = new bookModel({
     title,
+    author,
     year,
     poster,
     text,
@@ -132,6 +133,7 @@ app.put("/api/book/:id", upload.single("posterImg"), async (req, res) => {
       req.params.id,
       {
         title,
+        author,
         year,
         poster,
         text,

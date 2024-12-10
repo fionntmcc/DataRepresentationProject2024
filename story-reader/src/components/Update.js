@@ -88,7 +88,7 @@ export default function Update() {
                         value={title} />
                 </div>
                 <div className="form-group">
-                    <label>Release Author: </label>
+                    <label>Author: </label>
                     <input type="text"
                         className="form-control"
                         value={author} />

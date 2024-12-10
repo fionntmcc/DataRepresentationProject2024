@@ -73,7 +73,7 @@ const Write = () => {
 
         {/* Input box to change author value */}
         <div>
-          <label>Add Author: </label>
+          <label>Author: </label>
           <input type="text"
             className="form-control"
             value={author}
@@ -83,7 +83,7 @@ const Write = () => {
 
         {/* Input box to change year value */}
         <div>
-          <label>Add Book Year: </label>
+          <label>Book Year: </label>
           <input type="text"
             className="form-control"
             value={year}
@@ -93,7 +93,7 @@ const Write = () => {
 
         {/* Input box to change poster value */}
         <div>
-          <label>Add Poster URL: </label>
+          <label>Poster URL: </label>
           <input type="text"
             className="form-control"
             value={poster}
@@ -103,7 +103,7 @@ const Write = () => {
 
         {/* Input box to change book value */}
         <div className="form-group">
-          <label>Add Book Text: </label>
+          <label>Book Text: </label>
           <input type="text"
             className="form-control"
             value={text}
