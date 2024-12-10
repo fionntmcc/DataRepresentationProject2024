@@ -26,7 +26,7 @@ export default function Read() {
     }
   });
 
-  const PAGE_SIZE = 150;
+  const PAGE_SIZE = 200;
 
   useEffect(() => {
     axios.get('http://localhost:4000/api/book/' + id)

@@ -7,6 +7,7 @@ import Card from "react-bootstrap/Card";
 import { Buffer } from "buffer";
 import Carousel from 'react-bootstrap/Carousel';
 import App from '../App';
+import { set } from 'mongoose';
 require('../App.css');
 
 const Home = () => {
@@ -15,6 +16,7 @@ const Home = () => {
   const [book1, setBook1] = useState([]); // initialise books to null
   const [book2, setBook2] = useState([]);
   const [book3, setBook3] = useState([]);
+  const [activeBookText, setActiveBookText] = useState("");
   const activeBook = localStorage.getItem("activeBook");
   // axios get request to get active book from database
 
@@ -27,6 +29,7 @@ const Home = () => {
           // log response
           console.log(response.data);
           setBook1(response.data);
+          setActiveBookText("Continue reading");
         })
         .catch((error) => {
           console.log("Error loading book: ", error);
@@ -37,6 +40,7 @@ const Home = () => {
           // log response
           console.log(response.data);
           setBook1(response.data);
+          setActiveBookText("Recommended");
         })
         .catch((error) => {
           console.log("Error loading book: ", error);
@@ -95,38 +99,25 @@ const Home = () => {
   */
 
   return (
-    <Carousel data-bs-theme="dark">
+    <Carousel data-bs-theme="dark" >
       <Carousel.Item className='carousel-container'>
         <img
-          className="d-block w-100 container-fluid carousel-img"
+          className="d-block w-100 carousel-img"
           src={posterUrl1}
           alt="First slide"
         />
-
-        {book1.id != localStorage.getItem("activeBook") ?
-          <Carousel.Caption className=''>
+        <Carousel.Caption>
             <span className="badge bg-secondary">
-              <h5>Continue with your active book</h5>
               <p>{book1.title} by {book1.author}</p>
               <Link to={`/read/${book1._id}`}>
                 <Button variant="primary">Read</Button>
               </Link>
             </span>
           </Carousel.Caption>
-          : <Carousel.Caption className=''>
-            <span className="badge bg-secondary">
-              <h5>Recommended </h5>
-              <p>{book1.title} by {book1.author}</p>
-              <Link to={`/read/${book1._id}`}>
-                <Button variant="primary">Read</Button>
-              </Link>
-            </span>
-          </Carousel.Caption>
-        }
 
-        <Carousel.Caption className=''>
+        <Carousel.Caption>
           <span className="badge bg-secondary">
-            <h5>Continue with your active book</h5>
+            <h5>{activeBookText}</h5>
             <p>{book1.title} by {book1.author}</p>
             <Link to={`/read/${book1._id}`}>
               <Button variant="primary">Read</Button>
@@ -136,11 +127,11 @@ const Home = () => {
       </Carousel.Item>
       <Carousel.Item className='carousel-container'>
         <img
-          className="d-block w-100 container-fluid carousel-img"
+          className="d-block w-100 carousel-img"
           src={posterUrl2}
           alt="First slide"
         />
-        <Carousel.Caption className=''>
+        <Carousel.Caption>
           <span className="badge bg-secondary">
             <h5>Recommended </h5>
             <p>{book2.title} by {book2.author}</p>
@@ -152,11 +143,11 @@ const Home = () => {
       </Carousel.Item>
       <Carousel.Item className='carousel-container'>
         <img
-          className="d-block w-100 container-fluid carousel-img"
+          className="d-block w-100 carousel-img"
           src={posterUrl3}
           alt="First slide"
         />
-        <Carousel.Caption className=''>
+        <Carousel.Caption>
           <span className="badge bg-secondary">
             <h5>Recommended</h5>
             <p>{book3.title} by {book3.author}</p>
