@@ -15,6 +15,7 @@ function App() {
       <Router>
         <NavigationBar />
         <Routes>
+          <Route path="/" element={<Home />} />
           <Route path="/home" element={<Home />} />
           <Route path="/browse" element={<Browse />} />
           <Route path="/read/:id" element={<Read />} />

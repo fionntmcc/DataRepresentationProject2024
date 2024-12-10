@@ -58,7 +58,6 @@ const Browse = () => {
           <option value="author">Author</option>
         </select>
       </div>
-      <div>{searchQuery}</div>
       {/* display filtered books */}
       <Books myBooks={filteredBooks} ReloadData={Reload} />
     </div>

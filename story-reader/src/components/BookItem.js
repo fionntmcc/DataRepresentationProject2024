@@ -21,6 +21,11 @@ const BookItem = (props) => {
     // handler calls axios.delete to delete the book
     const handleDelete = (e) => {
         e.preventDefault();
+
+        // if deleted book is the active book, remove id from local storage
+        if (localStorage.getItem("activeBook") === props.myBook._id) {
+            localStorage.removeItem("activeBook");
+        }
         //console.log("props" + props.myBook._id);
         axios.delete('http://localhost:4000/api/book/' + props.myBook._id)
             .then(() => {
@@ -53,6 +58,9 @@ const BookItem = (props) => {
                     }
                 }>{props.myBook.title}</Card.Header>
                 <Card.Body>
+                    <p className="d-flex justify-content-center">
+                        {props.myBook.author} ({props.myBook.year})
+                    </p>
                     <blockquote className="blockquote mb-0">
                         <div className="d-flex justify-content-center">
                             {posterUrl && (
