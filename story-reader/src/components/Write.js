@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 // Reusable read component
 const Write = () => {
@@ -22,6 +23,7 @@ const Write = () => {
   const [poster, setPoster] = useState("");
   const [text, setText] = useState("");
   const [posterImg, setPosterImg] = useState(null);
+  const navigate = useNavigate();
 
   // handle botton click, log book details and post book to server
   const handleSubmit = (e) => {
@@ -48,7 +50,10 @@ const Write = () => {
         'Content-Type': 'multipart/form-data'
       }
     })
-      .then((res) => console.log(res.data))
+      .then((res) => {
+        console.log(res.data);
+        navigate('/browse');
+      })
       .catch((err) => console.log(err.data));
   };
 
