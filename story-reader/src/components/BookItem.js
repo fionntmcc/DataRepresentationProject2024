@@ -48,6 +48,7 @@ const BookItem = (props) => {
 
     // return book information for BookItem
     return (
+        /* Bootstrap columns for browse page layout */
         <Col xs={12} sm={6} md={6} className="mb-4 px-4">
             <Card className={`h-100 p-3`}>
                 <Card.Header style={
@@ -65,6 +66,7 @@ const BookItem = (props) => {
                         <div className="d-flex justify-content-center">
                             {posterUrl && (
                                 <div className="d-flex justify-content-center">
+                                    {/* Book image */}
                                     <img
                                         src={posterUrl}
                                         alt={props.myBook.title}

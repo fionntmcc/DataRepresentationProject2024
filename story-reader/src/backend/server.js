@@ -64,7 +64,7 @@ app.post('/api/books', upload.single('posterImg'), async (req, res) => {
       is returned in the body, and not the URL.
   */
   console.log("Looking for books");
-  console.log(req.body.title);
+  console.log('Book: ', book);
   const { title, author, year, poster, text } = req.body;
   const posterImg = req.file
     ? {
@@ -96,7 +96,7 @@ app.post('/api/books', upload.single('posterImg'), async (req, res) => {
 app.get('/api/book/:id', async (req, res) => {
   let book = await bookModel.findById({ _id: req.params.id });
   console.log('sending book with id: ', req.params.id);
-  console.log('book: ', book);
+  console.log('Book: ', book);
   res.send(book);
 });
 
