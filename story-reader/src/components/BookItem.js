@@ -38,7 +38,7 @@ const BookItem = (props) => {
     }
 
     // Checks if image was uploaded,
-    // if so, convert to base64
+    // if so, convert to base64 (6-bits per character)
     // else, use default image URL
     const posterUrl = props.myBook.posterImg
         ? `data:${props.myBook.posterImg.contentType};base64,${Buffer.from(

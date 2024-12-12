@@ -65,21 +65,3 @@ const Browse = () => {
 }
 
 export default Browse;
-
-// useEffect() method to get books from API
-    /*
-    useEffect(
-        () => {
-            axios.get("https://jsonblob.com/api/jsonblob/1311482858984103936") // gets from given API
-            .then((response) => {
-                console.log(response.data); // logs api response
-                setBooks(response.data.books) // sets Books using useState()
-            })
-            .catch(
-                (error) => { // handle errors
-                    console.log(error); 
-                }
-            )
-        }, [] // only runs on init
-    );
-    */

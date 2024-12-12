@@ -87,16 +87,14 @@ const Home = () => {
       book2.posterImg.data).toString("base64")}`
     : book2.poster;
 
+  // Checks if image was uploaded,
+  // if so, convert to base64 (6-bits per character)
+  // else, use default image URL
   const posterUrl3 = book3.posterImg
-    ? `data:${book3.posterImg.contentType};base64,${Buffer.from(
+    ? `data:${book3.posterImg.contentType};
+    base64,${Buffer.from(
       book3.posterImg.data).toString("base64")}`
     : book3.poster;
-
-  /*
-  if (activeBook === null) {
-    return <div>Loading...</div>;
-  }
-  */
 
   return (
     <Carousel data-bs-theme="dark" >
@@ -107,13 +105,13 @@ const Home = () => {
           alt="First slide"
         />
         <Carousel.Caption>
-            <span className="badge bg-secondary">
-              <p>{book1.title} by {book1.author}</p>
-              <Link to={`/read/${book1._id}`}>
-                <Button variant="primary">Read</Button>
-              </Link>
-            </span>
-          </Carousel.Caption>
+          <span className="badge bg-secondary">
+            <p>{book1.title} by {book1.author}</p>
+            <Link to={`/read/${book1._id}`}>
+              <Button variant="primary">Read</Button>
+            </Link>
+          </span>
+        </Carousel.Caption>
 
         <Carousel.Caption>
           <span className="badge bg-secondary">

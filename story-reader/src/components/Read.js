@@ -28,6 +28,7 @@ export default function Read() {
 
   const PAGE_SIZE = 200;
 
+  // Initial render of book
   useEffect(() => {
     axios.get('http://localhost:4000/api/book/' + id)
       .then((response) => {
@@ -44,6 +45,7 @@ export default function Read() {
       });
   }, [id, theme]);
 
+  // render of active book and page
   useEffect(() => {
     setPageText(getPage(page));
     if (localStorage.getItem("activeBook") === id) {
@@ -52,6 +54,7 @@ export default function Read() {
     }
   }, [page, text]);
 
+  // get text for current page
   function getPage(page) {
     var pageText = "";
     var i = (page - 1) * PAGE_SIZE;
@@ -77,12 +80,10 @@ export default function Read() {
   function toggleActiveBook() {
 
     if (activeBook) {
-      setActiveBook(false);
-      console.log("setActive book false");
+      setActiveBook(false); // trigger useEffect()
       setIsActive(false);
     } else {
-      setActiveBook(true);
-      console.log("setActive book true");
+      setActiveBook(true); // trigger useEffect()
       setIsActive(true);
     }
 
