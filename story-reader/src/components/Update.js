@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
@@ -50,9 +49,6 @@ export default function Update() {
 
         event.preventDefault();
 
-        // debug log book details
-        //console.log(`Title: ${title}, Year: ${year}, Poster: ${poster}`, `Text: ${text}`, `PosterImg: ${posterImg}`);
-
         const formData = new FormData();
         formData.append('title', title);
         formData.append('author', author);
@@ -63,18 +59,18 @@ export default function Update() {
             formData.append('posterImg', posterImg);
         }
 
-        // Post created book to server, retrieve response from server
         axios.put('http://localhost:4000/api/book/' + id, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
         })
-            .then((res) => {
-                console.log(res.data);
-                navigate('/browse');
-            }
-            )
-            .catch((err) => console.log(err.data));
+        .then((res) => {
+            console.log(res.data);
+            navigate('/browse');
+        })
+        .catch((err) => {
+            console.error('Error updating book:', err.response.data); // Detailed error logging
+        });
     }
 
     return (
@@ -85,31 +81,36 @@ export default function Update() {
                     <label>Book Title: </label>
                     <input type="text"
                         className="form-control"
-                        value={title} />
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)} />
                 </div>
                 <div className="form-group">
                     <label>Author: </label>
                     <input type="text"
                         className="form-control"
-                        value={author} />
+                        value={author}
+                        onChange={(e) => setAuthor(e.target.value)} />
                 </div>
                 <div className="form-group">
                     <label>Release Year: </label>
                     <input type="text"
                         className="form-control"
-                        value={year} />
+                        value={year}
+                        onChange={(e) => setYear(e.target.value)} />
                 </div>
                 <div className="form-group">
                     <label>Poster URL: </label>
                     <input type="text"
                         className="form-control"
-                        value={poster} />
+                        value={poster}
+                        onChange={(e) => setPoster(e.target.value)} />
                 </div>
                 <div className="form-group">
                     <label>Release Text: </label>
                     <input type="text"
                         className="form-control"
-                        value={text} />
+                        value={text}
+                        onChange={(e) => setText(e.target.value)} />
                 </div>
                 <div className="form-group mb-3">
                     <label className="form-label">Upload Image:</label>

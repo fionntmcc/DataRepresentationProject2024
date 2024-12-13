@@ -63,8 +63,6 @@ app.post('/api/books', upload.single('posterImg'), async (req, res) => {
       This is necessary because unlike the get method, data
       is returned in the body, and not the URL.
   */
-  console.log("Looking for books");
-  console.log('Book: ', book);
   const { title, author, year, poster, text } = req.body;
   const posterImg = req.file
     ? {
@@ -120,7 +118,7 @@ app.get('/api/random/book', async (req, res) => {
 // Update a book by ID in MongoDB
 app.put("/api/book/:id", upload.single("posterImg"), async (req, res) => {
   try {
-    const { title, year, poster, text } = req.body;
+    const { title, author, year, poster, text } = req.body;
     const posterImg = req.file
       ? {
         data: req.file.buffer,
@@ -148,7 +146,8 @@ app.put("/api/book/:id", upload.single("posterImg"), async (req, res) => {
 
     res.json({ message: "Book updated successfully", book: updatedBook });
   } catch (error) {
-    res.status(500).json({ message: "Server error", error });
+    console.error('Error updating book:', error); // Detailed error logging
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 });
 

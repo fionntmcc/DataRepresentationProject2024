@@ -91,8 +91,7 @@ const Home = () => {
   // if so, convert to base64 (6-bits per character)
   // else, use default image URL
   const posterUrl3 = book3.posterImg
-    ? `data:${book3.posterImg.contentType};
-    base64,${Buffer.from(
+    ? `data:${book3.posterImg.contentType};base64,${Buffer.from(
       book3.posterImg.data).toString("base64")}`
     : book3.poster;
 
@@ -127,7 +126,7 @@ const Home = () => {
         <img
           className="d-block w-100 carousel-img"
           src={posterUrl2}
-          alt="First slide"
+          alt="Second slide"
         />
         <Carousel.Caption>
           <span className="badge bg-secondary">
@@ -143,7 +142,7 @@ const Home = () => {
         <img
           className="d-block w-100 carousel-img"
           src={posterUrl3}
-          alt="First slide"
+          alt="Third slide"
         />
         <Carousel.Caption>
           <span className="badge bg-secondary">
