@@ -39,7 +39,7 @@ const Home = () => {
         .then((response) => {
           // log response
           console.log(response.data);
-          setBook1(response.data);
+          setBook1(response?.data);
           setActiveBookText("Recommended");
         })
         .catch((error) => {
@@ -51,7 +51,7 @@ const Home = () => {
       .then((response) => {
         // log response
         console.log(response.data);
-        setBook2(response.data);
+        setBook2(response?.data);
       })
       .catch((error) => {
         console.log("Error loading book: ", error);
@@ -61,7 +61,7 @@ const Home = () => {
       .then((response) => {
         // log response
         console.log(response.data);
-        setBook3(response.data);
+        setBook3(response?.data);
       })
       .catch((error) => {
         console.log("Error loading book: ", error);
