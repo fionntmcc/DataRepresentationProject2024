@@ -51,9 +51,9 @@ const Browse = () => {
     // return book list
     <div>
       <SearchBar setSearchQuery={setSearchQuery} /> {/* pass setSearchQuery to SearchBar */}
-      <div>
+      <div className="form-group">
         <label htmlFor="filterBy">Filter by: </label>
-        <select id="filterBy" value={filterBy} onChange={(e) => setFilterBy(e.target.value)}>
+        <select id="filterBy" className="form-control" value={filterBy} onChange={(e) => setFilterBy(e.target.value)}>
           <option value="title">Title</option>
           <option value="author">Author</option>
         </select>

@@ -114,7 +114,7 @@ app.get('/api/random/book', async (req, res) => {
 // User submits the edited data.
 // Route takes the updated details from req.body.
 // Updates the book in the DB.
-// Returns updated book to confirm the change
+// Returns updated book to confirm the change.
 // Update a book by ID in MongoDB
 app.put("/api/book/:id", upload.single("posterImg"), async (req, res) => {
   try {
